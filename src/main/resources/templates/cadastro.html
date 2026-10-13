@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Criar Conta | Sistema de Carpintaria</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/auth.css}">
+
+    <style>
+        .register-panel {
+            width: 100%;
+            max-width: 470px;
+        }
+
+        .register-title {
+            margin-bottom: 25px;
+        }
+
+        .register-title .login-label {
+            margin-bottom: 8px;
+        }
+
+        .register-title h2 {
+            margin: 0 0 7px;
+            color: #28231f;
+            font-size: 29px;
+            font-weight: 750;
+            letter-spacing: -.7px;
+        }
+
+        .register-title p {
+            margin: 0;
+            color: #8f8780;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .register-form .form-area {
+            margin-bottom: 16px;
+        }
+
+        .field-error {
+            display: block;
+            margin-top: 5px;
+            color: #b85252;
+            font-size: 9px;
+        }
+
+        .inactive-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin: 18px 0;
+            padding: 12px 13px;
+            border: 1px solid #eadfD3;
+            border-radius: 10px;
+            background: #faf7f3;
+            color: #756b62;
+            font-size: 10px;
+            line-height: 1.55;
+        }
+
+        .inactive-note i {
+            color: #a87548;
+            font-size: 14px;
+        }
+
+        .back-login {
+            margin-top: 20px;
+            text-align: center;
+            color: #8f8780;
+            font-size: 11px;
+        }
+
+        .back-login a {
+            margin-left: 4px;
+            color: #8d5d37;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-login a:hover {
+            text-decoration: underline;
+        }
+
+        .register-steps {
+            display: grid;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .register-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,.67);
+            font-size: 11px;
+        }
+
+        .register-step-number {
+            width: 29px;
+            height: 29px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 9px;
+            background: rgba(201,154,100,.13);
+            color: #d5aa79;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        @media (max-width: 760px) {
+            .register-panel {
+                max-width: 100%;
+            }
+
+            .register-title h2 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <!-- ==================================================
+         LADO VISUAL
+    ================================================== -->
+
+    <section class="auth-visual">
+
+        <div class="shape shape-one"></div>
+        <div class="shape shape-two"></div>
+        <div class="shape shape-three"></div>
+
+        <div class="visual-content">
+
+            <div class="visual-brand">
+
+                <div class="brand-symbol">
+                    <i class="bi bi-hammer"></i>
+                </div>
+
+                <div>
+                    <strong>Sistema de Carpintaria</strong>
+                    <span>Gestão e organização</span>
+                </div>
+
+            </div>
+
+            <div class="visual-message">
+
+                <span class="visual-label">
+                    NOVO ACESSO
+                </span>
+
+                <h1>
+                    Crie sua conta
+                    <span>em poucos passos.</span>
+                </h1>
+
+                <p>
+                    Cadastre seus dados para solicitar acesso
+                    ao Sistema de Carpintaria.
+                </p>
+
+                <div class="register-steps">
+
+                    <div class="register-step">
+                        <div class="register-step-number">1</div>
+                        <span>Informe seu nome, e-mail e senha.</span>
+                    </div>
+
+                    <div class="register-step">
+                        <div class="register-step-number">2</div>
+                        <span>Seu cadastro será criado como inativo.</span>
+                    </div>
+
+                    <div class="register-step">
+                        <div class="register-step-number">3</div>
+                        <span>Após a ativação, você poderá entrar no sistema.</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         CADASTRO
+    ================================================== -->
+
+    <section class="auth-login">
+
+        <div class="login-container register-panel">
+
+            <div class="mobile-brand">
+
+                <div class="brand-symbol">
+                    <i class="bi bi-hammer"></i>
+                </div>
+
+                <div>
+                    <strong>Sistema de Carpintaria</strong>
+                    <span>Gestão e organização</span>
+                </div>
+
+            </div>
+
+            <div class="register-title">
+
+                <span class="login-label">
+                    CRIAR CONTA
+                </span>
+
+                <h2>
+                    Novo usuário
+                </h2>
+
+                <p>
+                    Preencha os campos abaixo para realizar seu cadastro.
+                </p>
+
+            </div>
+
+            <form
+                th:action="@{/cadastro}"
+                method="post"
+                th:object="${cadastro}"
+                class="register-form">
+
+                <!-- ERROS GERAIS -->
+                <div
+                    th:if="${#fields.hasGlobalErrors()}"
+                    class="alert alert-danger custom-alert">
+
+                    <i class="bi bi-exclamation-circle"></i>
+
+                    <div>
+                        <div
+                            th:each="erro : ${#fields.globalErrors()}"
+                            th:text="${erro}">
+                            Não foi possível realizar o cadastro.
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- NOME -->
+                <div class="form-area">
+
+                    <label
+                        for="nome"
+                        class="form-label">
+
+                        Nome
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="bi bi-person"></i>
+
+                        <input
+                            type="text"
+                            id="nome"
+                            th:field="*{nome}"
+                            placeholder="Digite seu nome completo"
+                            autocomplete="name"
+                            required>
+
+                    </div>
+
+                    <span
+                        th:if="${#fields.hasErrors('nome')}"
+                        class="field-error"
+                        th:errors="*{nome}">
+                        Informe um nome válido.
+                    </span>
+
+                </div>
+
+                <!-- E-MAIL -->
+                <div class="form-area">
+
+                    <label
+                        for="email"
+                        class="form-label">
+
+                        E-mail
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="bi bi-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            th:field="*{email}"
+                            placeholder="seuemail@exemplo.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+                    <span
+                        th:if="${#fields.hasErrors('email')}"
+                        class="field-error"
+                        th:errors="*{email}">
+                        Informe um e-mail válido.
+                    </span>
+
+                </div>
+
+                <!-- SENHA -->
+                <div class="form-area">
+
+                    <label
+                        for="senha"
+                        class="form-label">
+
+                        Senha
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="bi bi-lock"></i>
+
+                        <input
+                            type="password"
+                            id="senha"
+                            th:field="*{senha}"
+                            placeholder="Crie uma senha"
+                            autocomplete="new-password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="password-button"
+                            onclick="alternarSenha(
+                                'senha',
+                                'iconeSenha'
+                            )">
+
+                            <i
+                                id="iconeSenha"
+                                class="bi bi-eye">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+                    <span
+                        th:if="${#fields.hasErrors('senha')}"
+                        class="field-error"
+                        th:errors="*{senha}">
+                        Informe uma senha válida.
+                    </span>
+
+                </div>
+
+                <!-- CONFIRMAR SENHA -->
+                <div class="form-area">
+
+                    <label
+                        for="confirmarSenha"
+                        class="form-label">
+
+                        Confirmar senha
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="bi bi-shield-lock"></i>
+
+                        <input
+                            type="password"
+                            id="confirmarSenha"
+                            th:field="*{confirmarSenha}"
+                            placeholder="Digite a senha novamente"
+                            autocomplete="new-password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="password-button"
+                            onclick="alternarSenha(
+                                'confirmarSenha',
+                                'iconeConfirmarSenha'
+                            )">
+
+                            <i
+                                id="iconeConfirmarSenha"
+                                class="bi bi-eye">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+                    <span
+                        th:if="${#fields.hasErrors('confirmarSenha')}"
+                        class="field-error"
+                        th:errors="*{confirmarSenha}">
+                        Confirme sua senha.
+                    </span>
+
+                </div>
+
+                <div class="inactive-note">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    <span>
+                        Após o cadastro, sua conta ficará
+                        <strong>inativa</strong> até que o acesso
+                        seja liberado na área de usuários.
+                    </span>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="login-button">
+
+                    <span>
+                        Criar conta
+                    </span>
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+            <div class="back-login">
+
+                Já possui uma conta?
+
+                <a th:href="@{/login}">
+                    Voltar para o login
+                </a>
+
+            </div>
+
+            <div class="login-footer">
+
+                <i class="bi bi-shield-check"></i>
+
+                <span>
+                    Cadastro protegido pelo sistema
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    function alternarSenha(
+        campoId,
+        iconeId
+    ) {
+
+        const campo =
+            document.getElementById(campoId);
+
+        const icone =
+            document.getElementById(iconeId);
+
+
+        if (campo.type === "password") {
+
+            campo.type = "text";
+
+            icone.className =
+                "bi bi-eye-slash";
+
+        } else {
+
+            campo.type = "password";
+
+            icone.className =
+                "bi bi-eye";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

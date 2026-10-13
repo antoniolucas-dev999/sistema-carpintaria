@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+
+<aside
+    class="sidebar"
+    th:classappend="${paginaAtiva == 'orcamentos'}
+        ? ' sidebar-orcamentos'
+        : ''"
+    th:fragment="sidebar(paginaAtiva)">
+
+
+    <!-- ==================================================
+         MARCA
+    ================================================== -->
+
+    <div class="sidebar-brand">
+
+
+        <div class="sidebar-brand-icon">
+
+            <i class="bi bi-hammer"></i>
+
+        </div>
+
+
+        <div class="sidebar-brand-text">
+
+            <strong>
+                Sistema de
+            </strong>
+
+            <span>
+                Carpintaria
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         MENU
+    ================================================== -->
+
+    <nav class="sidebar-menu">
+
+
+        <span class="menu-title">
+            MENU PRINCIPAL
+        </span>
+
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            th:href="@{/dashboard}"
+            class="menu-item"
+            th:classappend="${paginaAtiva == 'dashboard'}
+                ? ' active'
+                : ''">
+
+
+            <div class="menu-icon">
+
+                <i class="bi bi-grid-1x2"></i>
+
+            </div>
+
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+
+        <!-- CLIENTES -->
+
+        <a
+            sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR', 'DIRETOR')"
+            th:href="@{/clientes}"
+            class="menu-item"
+            th:classappend="${paginaAtiva == 'clientes'}
+                ? ' active'
+                : ''">
+
+
+            <div class="menu-icon">
+
+                <i class="bi bi-people"></i>
+
+            </div>
+
+
+            <span>
+                Clientes
+            </span>
+
+        </a>
+
+
+
+        <!-- ORÇAMENTOS -->
+
+        <a
+            sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR', 'DIRETOR')"
+            th:href="@{/orcamentos}"
+            class="menu-item"
+            th:classappend="${paginaAtiva == 'orcamentos'}
+                ? ' active'
+                : ''">
+
+
+            <div class="menu-icon">
+
+                <i class="bi bi-file-earmark-text"></i>
+
+            </div>
+
+
+            <span>
+                Orçamentos
+            </span>
+
+        </a>
+
+
+
+        <!-- PEDIDOS -->
+
+        <a
+            sec:authorize="
+                hasAnyRole(
+                    'ADMIN',
+                    'VENDEDOR',
+                    'FINANCEIRO',
+                    'SUPERVISOR_PRODUCAO',
+                    'GERENTE_PRODUCAO',
+                    'DIRETOR'
+                )"
+            th:href="@{/pedidos}"
+            class="menu-item"
+            th:classappend="${paginaAtiva == 'pedidos'}
+                ? ' active'
+                : ''">
+
+
+            <div class="menu-icon">
+
+                <i class="bi bi-box-seam"></i>
+
+            </div>
+
+
+            <span>
+                Pedidos
+            </span>
+
+        </a>
+
+
+
+        <!-- USUÁRIOS -->
+
+        <a
+            sec:authorize="hasRole('ADMIN')"
+            th:href="@{/usuarios}"
+            class="menu-item"
+            th:classappend="${paginaAtiva == 'usuarios'}
+                ? ' active'
+                : ''">
+
+
+            <div class="menu-icon">
+
+                <i class="bi bi-person-gear"></i>
+
+            </div>
+
+
+            <span>
+                Usuários
+            </span>
+
+        </a>
+
+
+
+        <!-- MEU PERFIL -->
+
+        <a
+            th:href="@{/meu-perfil}"
+            class="menu-item"
+            th:classappend="${paginaAtiva == 'perfil'}
+                ? ' active'
+                : ''">
+
+
+            <div class="menu-icon">
+
+                <i class="bi bi-person-circle"></i>
+
+            </div>
+
+
+            <span>
+                Meu Perfil
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- ==================================================
+         RODAPÉ
+    ================================================== -->
+
+    <div class="sidebar-bottom">
+
+
+        <div class="sidebar-security">
+
+            <i class="bi bi-shield-check"></i>
+
+            <div>
+
+                <strong>
+                    Área segura
+                </strong>
+
+                <span>
+                    Acesso autenticado
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <form
+            th:action="@{/logout}"
+            method="post">
+
+
+            <button
+                type="submit"
+                class="logout-button">
+
+
+                <i class="bi bi-box-arrow-left"></i>
+
+
+                <span>
+                    Sair do sistema
+                </span>
+
+            </button>
+
+        </form>
+
+
+    </div>
+
+
+</aside>
+
+
+</body>
+
+</html>

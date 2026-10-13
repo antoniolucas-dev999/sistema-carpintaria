@@ -1,0 +1,109 @@
+# ==================================================
+# MAVEN / JAVA
+# ==================================================
+
+HELP.md
+
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+*.class
+*.log
+
+# ==================================================
+# BANCO DE DADOS LOCAL
+# ==================================================
+
+/data/
+
+*.mv.db
+*.trace.db
+*.db
+*.sqlite
+*.sqlite3
+
+# ==================================================
+# CONFIGURACOES E CREDENCIAIS
+# ==================================================
+
+.env
+.env.*
+!.env.example
+
+src/main/resources/application.properties
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
+src/main/resources/application-local.properties
+
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+# ==================================================
+# ARQUIVOS ENVIADOS PELOS USUARIOS
+# ==================================================
+
+/uploads/
+
+# ==================================================
+# STS / ECLIPSE
+# ==================================================
+
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# ==================================================
+# INTELLIJ IDEA
+# ==================================================
+
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ==================================================
+# NETBEANS
+# ==================================================
+
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+build/
+
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ==================================================
+# VS CODE
+# ==================================================
+
+.vscode/
+
+# ==================================================
+# SISTEMA OPERACIONAL
+# ==================================================
+
+.DS_Store
+Thumbs.db
+
+# ==================================================
+# ARQUIVOS TEMPORARIOS
+# ==================================================
+
+*.tmp
+*.bak
+*.swp
+*.swo

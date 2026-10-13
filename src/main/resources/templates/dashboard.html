@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Dashboard | Sistema de Carpintaria
+    </title>
+
+
+    <!-- BOOTSTRAP -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- BOOTSTRAP ICONS -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        th:href="@{/css/dashboard.css}">
+
+
+    <style>
+
+        /* ==================================================
+           DASHBOARD
+        ================================================== */
+
+        body {
+            background: #f5f4f1;
+        }
+
+
+        .dashboard-page {
+            padding: 30px;
+        }
+
+
+        /* ==================================================
+           BOAS-VINDAS
+        ================================================== */
+
+        .welcome-card {
+            position: relative;
+
+            overflow: hidden;
+
+            margin-bottom: 24px;
+
+            padding: 30px 32px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #29241f 0%,
+                    #1b1815 100%
+                );
+
+            color: #ffffff;
+
+            box-shadow:
+                0 12px 35px
+                rgba(35, 29, 24, .10);
+        }
+
+
+        .welcome-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            right: -100px;
+            top: -130px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .07);
+        }
+
+
+        .welcome-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 160px;
+            height: 160px;
+
+            right: 40px;
+            bottom: -110px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(201, 154, 100, .08);
+        }
+
+
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .welcome-label {
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+            color: #d0a373;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .welcome-card h1 {
+            margin: 0 0 8px;
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+            letter-spacing: -.8px;
+        }
+
+
+        .welcome-card p {
+            max-width: 540px;
+
+            margin: 0;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .58
+                );
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ==================================================
+           CARDS DE INDICADORES
+        ================================================== */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .stat-card {
+            position: relative;
+
+            min-height: 145px;
+
+            padding: 20px;
+
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 15px;
+
+            background: #ffffff;
+
+            transition:
+                transform .2s,
+                box-shadow .2s;
+
+            overflow: hidden;
+        }
+
+
+        .stat-card:hover {
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(44, 36, 29, .07);
+        }
+
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 19px;
+        }
+
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #f3eee8;
+
+            color: #9c6b42;
+
+            font-size: 18px;
+        }
+
+
+        .stat-arrow {
+            color: #b8b1a9;
+
+            font-size: 13px;
+        }
+
+
+        .stat-label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #8d867e;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+        }
+
+
+        .stat-value {
+            display: block;
+
+            color: #29241f;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            line-height: 1.2;
+        }
+
+
+        .stat-description {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #aaa39c;
+
+            font-size: 10px;
+        }
+
+
+        .stat-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* ==================================================
+           CONTEÚDO INFERIOR
+        ================================================== */
+
+        .dashboard-bottom {
+            display: grid;
+
+            grid-template-columns:
+                1.35fr
+                .65fr;
+
+            gap: 18px;
+        }
+
+
+        .dashboard-panel {
+            background: #ffffff;
+
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+        }
+
+
+        .panel-header {
+            padding: 20px 22px;
+
+            border-bottom:
+                1px solid
+                #eeeae5;
+        }
+
+
+        .panel-header h2 {
+            margin: 0;
+
+            color: #302a25;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        .panel-header p {
+            margin:
+                4px
+                0
+                0;
+
+            color: #989189;
+
+            font-size: 11px;
+        }
+
+
+        /* ==================================================
+           AÇÕES RÁPIDAS
+        ================================================== */
+
+        .quick-list {
+            padding: 8px;
+        }
+
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            min-height: 67px;
+
+            padding:
+                10px
+                12px;
+
+            border-radius: 11px;
+
+            color: #332d28;
+
+            text-decoration: none;
+
+            transition: .2s;
+        }
+
+
+        .quick-action:hover {
+            background: #f8f6f3;
+
+            color: #332d28;
+        }
+
+
+        .quick-action-icon {
+            width: 39px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background: #f2ece6;
+
+            color: #95643c;
+
+            font-size: 16px;
+        }
+
+
+        .quick-action-info {
+            flex: 1;
+        }
+
+
+        .quick-action-info strong {
+            display: block;
+
+            margin-bottom: 2px;
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+
+        .quick-action-info span {
+            display: block;
+
+            color: #999189;
+
+            font-size: 10px;
+        }
+
+
+        .quick-action > i {
+            color: #bbb4ad;
+
+            font-size: 11px;
+        }
+
+
+        /* ==================================================
+           SISTEMA
+        ================================================== */
+
+        .system-content {
+            padding: 22px;
+        }
+
+
+        .system-icon {
+            width: 54px;
+            height: 54px;
+
+            margin-bottom: 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2c2722,
+                    #171513
+                );
+
+            color: #d3a46f;
+
+            font-size: 21px;
+        }
+
+
+        .system-content h3 {
+            margin-bottom: 7px;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        .system-content p {
+            margin-bottom: 20px;
+
+            color: #8f8881;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        .system-item {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                8px
+                0;
+
+            border-top:
+                1px solid
+                #f0ede9;
+
+            color: #777069;
+
+            font-size: 10px;
+        }
+
+
+        .system-item i {
+            color: #a77348;
+        }
+
+
+        /* ==================================================
+           RESPONSIVIDADE
+        ================================================== */
+
+        @media (max-width: 1200px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .dashboard-page {
+                padding: 22px;
+            }
+
+
+            .dashboard-bottom {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .dashboard-page {
+                padding: 17px;
+            }
+
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .welcome-card {
+                padding:
+                    24px
+                    22px;
+            }
+
+
+            .welcome-card h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app-layout">
+
+
+    <!-- ==================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside
+        th:replace="~{fragments/sidebar :: sidebar('dashboard')}">
+    </aside>
+
+
+
+    <!-- ==================================================
+         CONTEÚDO
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- ==================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+
+            <div class="d-flex align-items-center gap-3">
+
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+
+                <div>
+
+                    <strong>
+                        Dashboard
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="topbar-user">
+
+
+                <div>
+
+                    <span>
+                        Usuário conectado
+                    </span>
+
+
+                    <strong th:text="${nomeUsuario}">
+                        Usuário
+                    </strong>
+
+                </div>
+
+
+                <div class="top-avatar">
+
+                    <i class="bi bi-person"></i>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ==================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section class="dashboard-page">
+
+
+            <!-- ==================================================
+                 BOAS-VINDAS
+            ================================================== -->
+
+            <div class="welcome-card">
+
+
+                <div class="welcome-content">
+
+
+                    <span class="welcome-label">
+                        VISÃO GERAL
+                    </span>
+
+
+                    <h1>
+
+                        Olá,
+
+                        <span th:text="${nomeUsuario}">
+                            Usuário
+                        </span>
+
+                    </h1>
+
+
+                    <p>
+                        Acompanhe as principais informações
+                        e acesse rapidamente as funções
+                        do Sistema de Carpintaria.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 INDICADORES
+            ================================================== -->
+
+            <div class="stats-grid">
+
+
+                <!-- CLIENTES -->
+
+                <a
+                    th:href="@{/clientes}"
+                    class="stat-link">
+
+
+                    <div class="stat-card">
+
+
+                        <div class="stat-top">
+
+
+                            <div class="stat-icon">
+
+                                <i class="bi bi-people"></i>
+
+                            </div>
+
+
+                            <i class="bi bi-arrow-up-right stat-arrow"></i>
+
+                        </div>
+
+
+                        <span class="stat-label">
+                            Clientes
+                        </span>
+
+
+                        <span
+                            class="stat-value"
+                            th:text="${totalClientes}">
+
+                            0
+
+                        </span>
+
+
+                        <span class="stat-description">
+                            Clientes cadastrados
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- ORÇAMENTOS -->
+
+                <a
+                    th:href="@{/orcamentos}"
+                    class="stat-link">
+
+
+                    <div class="stat-card">
+
+
+                        <div class="stat-top">
+
+
+                            <div class="stat-icon">
+
+                                <i class="bi bi-file-earmark-text"></i>
+
+                            </div>
+
+
+                            <i class="bi bi-arrow-up-right stat-arrow"></i>
+
+                        </div>
+
+
+                        <span class="stat-label">
+                            Orçamentos
+                        </span>
+
+
+                        <span class="stat-value">
+
+                            <i class="bi bi-folder2-open"></i>
+
+                        </span>
+
+
+                        <span class="stat-description">
+                            Consultar orçamentos
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- VALOR ORÇADO -->
+
+                <div class="stat-card">
+
+
+                    <div class="stat-top">
+
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-cash-stack"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="stat-label">
+                        Valor Orçado
+                    </span>
+
+
+                    <span class="stat-value">
+
+                        R$
+
+                        <span
+                            th:text="${#numbers.formatDecimal(
+                                valorTotalOrcado,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                            )}">
+
+                            0,00
+
+                        </span>
+
+                    </span>
+
+
+                    <span class="stat-description">
+                        Total dos orçamentos
+                    </span>
+
+                </div>
+
+
+
+                <!-- USUÁRIOS -->
+
+                <a
+                    th:href="@{/usuarios}"
+                    class="stat-link">
+
+
+                    <div class="stat-card">
+
+
+                        <div class="stat-top">
+
+
+                            <div class="stat-icon">
+
+                                <i class="bi bi-person-gear"></i>
+
+                            </div>
+
+
+                            <i class="bi bi-arrow-up-right stat-arrow"></i>
+
+                        </div>
+
+
+                        <span class="stat-label">
+                            Usuários
+                        </span>
+
+
+                        <span class="stat-value">
+
+                            <i class="bi bi-people"></i>
+
+                        </span>
+
+
+                        <span class="stat-description">
+                            Gerenciar acessos
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 PARTE INFERIOR
+            ================================================== -->
+
+            <div class="dashboard-bottom">
+
+
+                <!-- ==================================================
+                     AÇÕES RÁPIDAS
+                ================================================== -->
+
+                <div class="dashboard-panel">
+
+
+                    <div class="panel-header">
+
+
+                        <h2>
+                            Ações rápidas
+                        </h2>
+
+
+                        <p>
+                            Acesse as principais funções do sistema.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="quick-list">
+
+
+                        <!-- NOVO CLIENTE -->
+
+                        <a
+                            th:href="@{/clientes/novo}"
+                            class="quick-action">
+
+
+                            <div class="quick-action-icon">
+
+                                <i class="bi bi-person-plus"></i>
+
+                            </div>
+
+
+                            <div class="quick-action-info">
+
+                                <strong>
+                                    Novo cliente
+                                </strong>
+
+                                <span>
+                                    Cadastrar um novo cliente
+                                </span>
+
+                            </div>
+
+
+                            <i class="bi bi-chevron-right"></i>
+
+                        </a>
+
+
+
+                        <!-- NOVO ORÇAMENTO -->
+
+                        <a
+                            th:href="@{/orcamentos/novo}"
+                            class="quick-action">
+
+
+                            <div class="quick-action-icon">
+
+                                <i class="bi bi-file-earmark-plus"></i>
+
+                            </div>
+
+
+                            <div class="quick-action-info">
+
+                                <strong>
+                                    Novo orçamento
+                                </strong>
+
+                                <span>
+                                    Criar um novo orçamento
+                                </span>
+
+                            </div>
+
+
+                            <i class="bi bi-chevron-right"></i>
+
+                        </a>
+
+
+
+                        <!-- USUÁRIOS -->
+
+                        <a
+                            th:href="@{/usuarios}"
+                            class="quick-action">
+
+
+                            <div class="quick-action-icon">
+
+                                <i class="bi bi-person-check"></i>
+
+                            </div>
+
+
+                            <div class="quick-action-info">
+
+                                <strong>
+                                    Gerenciar usuários
+                                </strong>
+
+                                <span>
+                                    Ativar ou inativar acessos
+                                </span>
+
+                            </div>
+
+
+                            <i class="bi bi-chevron-right"></i>
+
+                        </a>
+
+
+
+                        <!-- PERFIL -->
+
+                        <a
+                            th:href="@{/meu-perfil}"
+                            class="quick-action">
+
+
+                            <div class="quick-action-icon">
+
+                                <i class="bi bi-person-circle"></i>
+
+                            </div>
+
+
+                            <div class="quick-action-info">
+
+                                <strong>
+                                    Meu perfil
+                                </strong>
+
+                                <span>
+                                    Alterar seus dados de acesso
+                                </span>
+
+                            </div>
+
+
+                            <i class="bi bi-chevron-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     INFORMAÇÕES DO SISTEMA
+                ================================================== -->
+
+                <div class="dashboard-panel">
+
+
+                    <div class="panel-header">
+
+
+                        <h2>
+                            Sistema
+                        </h2>
+
+
+                        <p>
+                            Informações gerais.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="system-content">
+
+
+                        <div class="system-icon">
+
+                            <i class="bi bi-hammer"></i>
+
+                        </div>
+
+
+                        <h3>
+                            Sistema de Carpintaria
+                        </h3>
+
+
+                        <p>
+                            Aplicação para gerenciamento
+                            de clientes, usuários e orçamentos,
+                            com cálculo automatizado de medidas.
+                        </p>
+
+
+
+                        <div class="system-item">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            <span>
+                                Acesso autenticado
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="system-item">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            <span>
+                                Cadastro de clientes
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="system-item">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            <span>
+                                Gestão de orçamentos
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="system-item">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            <span>
+                                Cálculos ML, M² e M³
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- ==================================================
+     MENU MOBILE
+================================================== -->
+
+<script>
+
+    const button =
+        document.getElementById(
+            "mobileMenuButton"
+        );
+
+
+    const sidebar =
+        document.querySelector(
+            ".sidebar"
+        );
+
+
+    if (button && sidebar) {
+
+
+        button.addEventListener(
+            "click",
+            function () {
+
+
+                sidebar.classList.toggle(
+                    "sidebar-open"
+                );
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

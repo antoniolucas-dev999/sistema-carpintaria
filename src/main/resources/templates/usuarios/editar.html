@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Usuário | Sistema de Carpintaria</title>
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/dashboard.css}">
+
+
+    <style>
+
+        body {
+            background: #f5f4f1;
+        }
+
+
+        .edit-user-page {
+            padding: 30px;
+        }
+
+
+        /*
+         * ==================================================
+         * CABEÇALHO
+         * ==================================================
+         */
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .page-label {
+            color: #a87548;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .page-heading h1 {
+            margin: 5px 0;
+
+            color: #29241f;
+
+            font-size: 29px;
+            font-weight: 700;
+
+            letter-spacing: -.8px;
+        }
+
+
+        .page-heading p {
+            margin: 0;
+
+            color: #8e867e;
+
+            font-size: 12px;
+        }
+
+
+        .heading-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #29241f,
+                    #171513
+                );
+
+            color: #d3a46f;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 10px 25px
+                rgba(35, 29, 24, .12);
+        }
+
+
+        /*
+         * ==================================================
+         * CONTAINER
+         * ==================================================
+         */
+
+        .edit-container {
+            max-width: 850px;
+        }
+
+
+        /*
+         * ==================================================
+         * INFORMAÇÕES DO USUÁRIO
+         * ==================================================
+         */
+
+        .user-summary {
+            margin-bottom: 18px;
+
+            padding: 18px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 14px;
+
+            background: #ffffff;
+        }
+
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background: #f2ece6;
+
+            color: #98673f;
+
+            font-size: 19px;
+        }
+
+
+        .user-summary strong {
+            display: block;
+
+            color: #302a25;
+
+            font-size: 13px;
+        }
+
+
+        .user-summary span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #918980;
+
+            font-size: 10px;
+        }
+
+
+        /*
+         * ==================================================
+         * CARD
+         * ==================================================
+         */
+
+        .form-card {
+            overflow: hidden;
+
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 15px;
+
+            background: #ffffff;
+        }
+
+
+        .form-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding:
+                19px
+                21px;
+
+            border-bottom:
+                1px solid
+                #eeeae5;
+        }
+
+
+        .form-card-header h2 {
+            margin: 0;
+
+            color: #302a25;
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        .form-card-header p {
+            margin:
+                4px
+                0
+                0;
+
+            color: #999189;
+
+            font-size: 10px;
+        }
+
+
+        .form-card-icon {
+            width: 39px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background: #f2ece6;
+
+            color: #98673f;
+
+            font-size: 16px;
+        }
+
+
+        .form-card-body {
+            padding: 22px;
+        }
+
+
+        /*
+         * ==================================================
+         * CAMPOS
+         * ==================================================
+         */
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+
+        .field-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #514a44;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: .2px;
+        }
+
+
+        .required {
+            color: #a15f4e;
+        }
+
+
+        .form-control,
+        .form-select {
+            min-height: 44px;
+
+            border:
+                1px solid
+                #ddd7d0;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #3f3934;
+
+            font-size: 12px;
+
+            box-shadow: none;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #b89676;
+
+            box-shadow:
+                0 0 0
+                3px
+                rgba(168, 117, 72, .10);
+        }
+
+
+        .field-help {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #a29a92;
+
+            font-size: 9px;
+        }
+
+
+        .field-error {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #a65353;
+
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+
+        /*
+         * ==================================================
+         * ACESSOS MÚLTIPLOS
+         * ==================================================
+         */
+
+        .access-section {
+            margin-top: 4px;
+            margin-bottom: 22px;
+
+            padding: 17px;
+
+            border:
+                1px solid
+                #e5dfd8;
+
+            border-radius: 13px;
+
+            background: #faf9f7;
+        }
+
+
+        .access-section-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .access-section-title {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 9px;
+        }
+
+
+        .access-section-title i {
+            margin-top: 1px;
+
+            color: #996c47;
+
+            font-size: 15px;
+        }
+
+
+        .access-section-title strong {
+            display: block;
+
+            color: #493f37;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        .access-section-title span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #978e86;
+
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+
+        /*
+         * ==================================================
+         * SELECIONAR TODOS
+         * ==================================================
+         */
+
+        .select-all-wrapper {
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                8px
+                11px;
+
+            border:
+                1px solid
+                #ddd5cd;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #655d56;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            user-select: none;
+        }
+
+
+        .select-all-wrapper:hover {
+            border-color: #bfa994;
+
+            background: #fbf8f5;
+        }
+
+
+        .select-all-wrapper input {
+            width: 14px;
+            height: 14px;
+
+            margin: 0;
+
+            accent-color: #956a47;
+
+            cursor: pointer;
+        }
+
+
+        /*
+         * ==================================================
+         * GRID DOS ACESSOS
+         * ==================================================
+         */
+
+        .access-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+
+            gap: 9px;
+        }
+
+
+        /*
+         * ==================================================
+         * BOTÃO DE ACESSO
+         * ==================================================
+         */
+
+        .access-option {
+            min-height: 62px;
+
+            padding:
+                10px
+                12px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            border:
+                1px solid
+                #e2dcd5;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            cursor: pointer;
+
+            transition: .18s;
+
+            user-select: none;
+        }
+
+
+        .access-option:hover {
+            border-color: #cbb8a5;
+
+            background: #fdfbf9;
+        }
+
+
+        /*
+         * Checkbox real.
+         *
+         * Agora ele permanece funcional dentro
+         * do próprio label.
+         */
+
+        .access-checkbox {
+            position: absolute;
+
+            width: 1px;
+            height: 1px;
+
+            opacity: 0;
+
+            overflow: hidden;
+        }
+
+
+        /*
+         * Ícone visual do checkbox.
+         */
+
+        .access-check-icon {
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid
+                #d9d1c9;
+
+            border-radius: 8px;
+
+            background: #f8f6f3;
+
+            color: transparent;
+
+            font-size: 12px;
+
+            transition: .18s;
+        }
+
+
+        .access-description {
+            min-width: 0;
+        }
+
+
+        .access-description strong {
+            display: block;
+
+            color: #514941;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+
+        .access-description span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #999088;
+
+            font-size: 8px;
+        }
+
+
+        /*
+         * Selecionado.
+         *
+         * Esta classe será aplicada pelo JavaScript.
+         */
+
+        .access-option.selected {
+            border-color: #b9916c;
+
+            background: #fbf6f1;
+
+            box-shadow:
+                inset 0 0 0 1px
+                rgba(168, 117, 72, .08);
+        }
+
+
+        .access-option.selected
+        .access-check-icon {
+            border-color: #9c704d;
+
+            background: #9c704d;
+
+            color: #ffffff;
+        }
+
+
+        /*
+         * Desabilitado no perfil ADMIN.
+         */
+
+        .access-option.disabled {
+            opacity: .45;
+
+            cursor: not-allowed;
+
+            background: #f3f1ee;
+        }
+
+
+        /*
+         * ==================================================
+         * AVISO ADMIN
+         * ==================================================
+         */
+
+        .admin-access-notice {
+            display: none;
+
+            margin-top: 11px;
+
+            padding:
+                10px
+                11px;
+
+            border:
+                1px solid
+                #ded4ca;
+
+            border-radius: 9px;
+
+            background: #f5f1ed;
+
+            color: #74685e;
+
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+
+        .admin-access-notice.active {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 7px;
+        }
+
+
+        .admin-access-notice i {
+            color: #956b49;
+
+            font-size: 13px;
+        }
+
+
+        /*
+         * ==================================================
+         * AVISO DE SEGURANÇA
+         * ==================================================
+         */
+
+        .security-info {
+            margin-top: 8px;
+            margin-bottom: 22px;
+
+            padding:
+                13px
+                14px;
+
+            display: flex;
+            align-items: flex-start;
+
+            gap: 10px;
+
+            border:
+                1px solid
+                #e7ddd3;
+
+            border-radius: 11px;
+
+            background: #faf7f3;
+
+            color: #74675c;
+        }
+
+
+        .security-info i {
+            margin-top: 1px;
+
+            color: #9a6c47;
+
+            font-size: 14px;
+        }
+
+
+        .security-info strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #5b4d42;
+
+            font-size: 10px;
+        }
+
+
+        .security-info span {
+            display: block;
+
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+
+        /*
+         * ==================================================
+         * AÇÕES
+         * ==================================================
+         */
+
+        .form-actions {
+            padding-top: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            border-top:
+                1px solid
+                #eeeae5;
+        }
+
+
+        .cancel-button {
+            min-height: 42px;
+
+            padding:
+                0
+                16px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            border:
+                1px solid
+                #ddd5cd;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #6e655d;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: .2s;
+        }
+
+
+        .cancel-button:hover {
+            background: #f7f4f1;
+
+            color: #4e4741;
+        }
+
+
+        .save-button {
+            min-height: 42px;
+
+            padding:
+                0
+                17px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            border:
+                1px solid
+                #29241f;
+
+            border-radius: 10px;
+
+            background: #29241f;
+
+            color: #ffffff;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+
+        .save-button:hover {
+            background: #171513;
+
+            transform: translateY(-1px);
+        }
+
+
+        /*
+         * ==================================================
+         * MOBILE
+         * ==================================================
+         */
+
+        @media (max-width: 768px) {
+
+            .edit-user-page {
+                padding: 18px;
+            }
+
+
+            .page-heading {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+
+
+            .heading-icon {
+                width: 45px;
+                height: 45px;
+
+                font-size: 17px;
+            }
+
+
+            .form-card-body {
+                padding: 17px;
+            }
+
+
+            .access-section-header {
+                flex-direction: column;
+            }
+
+
+            .select-all-wrapper {
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .access-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+
+            .cancel-button,
+            .save-button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app-layout">
+
+
+    <!-- ==================================================
+         MENU
+    ================================================== -->
+
+    <aside
+        th:replace="~{fragments/sidebar :: sidebar('usuarios')}">
+
+    </aside>
+
+
+    <!-- ==================================================
+         CONTEÚDO
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+
+            <div class="d-flex align-items-center gap-3">
+
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+
+                <strong>
+                    Editar Usuário
+                </strong>
+
+
+            </div>
+
+
+        </header>
+
+
+        <section class="edit-user-page">
+
+
+            <div class="edit-container">
+
+
+                <!-- ==================================================
+                     CABEÇALHO
+                ================================================== -->
+
+                <div class="page-heading">
+
+
+                    <div>
+
+
+                        <span class="page-label">
+                            USUÁRIOS
+                        </span>
+
+
+                        <h1>
+                            Editar usuário
+                        </h1>
+
+
+                        <p>
+                            Atualize os dados, o perfil principal e os acessos do usuário.
+                        </p>
+
+
+                    </div>
+
+
+                    <div class="heading-icon">
+
+                        <i class="bi bi-person-gear"></i>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ==================================================
+                     USUÁRIO
+                ================================================== -->
+
+                <div class="user-summary">
+
+
+                    <div class="user-avatar">
+
+                        <i class="bi bi-person"></i>
+
+                    </div>
+
+
+                    <div>
+
+
+                        <strong
+                            th:text="${usuario.nome}">
+
+                            Nome do usuário
+
+                        </strong>
+
+
+                        <span>
+
+                            Cadastro
+
+                            <strong
+                                style="display: inline; font-size: inherit;"
+                                th:text="'#' + ${usuario.id}">
+
+                                #1
+
+                            </strong>
+
+                            · Login atual:
+
+                            <strong
+                                style="display: inline; font-size: inherit;"
+                                th:text="${usuario.login}">
+
+                                usuario
+
+                            </strong>
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ==================================================
+                     FORMULÁRIO
+                ================================================== -->
+
+                <div class="form-card">
+
+
+                    <div class="form-card-header">
+
+
+                        <div>
+
+
+                            <h2>
+                                Dados do usuário
+                            </h2>
+
+
+                            <p>
+                                Os campos marcados com * são obrigatórios.
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="form-card-icon">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-card-body">
+
+
+                        <form
+                            th:action="@{/usuarios/{id}/editar(id=${usuario.id})}"
+                            th:object="${edicao}"
+                            method="post">
+
+
+                            <!-- ==================================================
+                                 ERROS GERAIS
+                            ================================================== -->
+
+                            <div
+                                th:if="${#fields.hasGlobalErrors()}"
+                                class="alert alert-danger">
+
+
+                                <div
+                                    th:each="erro : ${#fields.globalErrors()}"
+                                    th:text="${erro}">
+
+                                    Não foi possível salvar as alterações.
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- ==================================================
+                                 NOME
+                            ================================================== -->
+
+                            <div class="field-group">
+
+
+                                <label
+                                    for="nome"
+                                    class="field-label">
+
+                                    Nome completo
+                                    <span class="required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="nome"
+                                    class="form-control"
+                                    th:field="*{nome}"
+                                    maxlength="100"
+                                    autocomplete="name"
+                                    placeholder="Digite o nome do usuário">
+
+
+                                <span
+                                    th:if="${#fields.hasErrors('nome')}"
+                                    th:errors="*{nome}"
+                                    class="field-error">
+
+                                    Erro no nome.
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- ==================================================
+                                 LOGIN
+                            ================================================== -->
+
+                            <div class="field-group">
+
+
+                                <label
+                                    for="login"
+                                    class="field-label">
+
+                                    Login
+                                    <span class="required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="login"
+                                    class="form-control"
+                                    th:field="*{login}"
+                                    maxlength="80"
+                                    autocomplete="off"
+                                    placeholder="Ex.: joao.silva">
+
+
+                                <span class="field-help">
+
+                                    Utilize apenas letras, números, ponto,
+                                    hífen ou underline.
+
+                                </span>
+
+
+                                <span
+                                    th:if="${#fields.hasErrors('login')}"
+                                    th:errors="*{login}"
+                                    class="field-error">
+
+                                    Erro no login.
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- ==================================================
+                                 E-MAIL
+                            ================================================== -->
+
+                            <div class="field-group">
+
+
+                                <label
+                                    for="email"
+                                    class="field-label">
+
+                                    E-mail
+
+                                </label>
+
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    class="form-control"
+                                    th:field="*{email}"
+                                    maxlength="150"
+                                    autocomplete="email"
+                                    placeholder="usuario@empresa.com">
+
+
+                                <span class="field-help">
+
+                                    O e-mail é opcional.
+
+                                </span>
+
+
+                                <span
+                                    th:if="${#fields.hasErrors('email')}"
+                                    th:errors="*{email}"
+                                    class="field-error">
+
+                                    Erro no e-mail.
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- ==================================================
+                                 PERFIL PRINCIPAL
+                            ================================================== -->
+
+                            <div class="field-group">
+
+
+                                <label
+                                    for="perfil"
+                                    class="field-label">
+
+                                    Perfil principal
+                                    <span class="required">*</span>
+
+                                </label>
+
+
+                                <select
+                                    id="perfil"
+                                    class="form-select"
+                                    th:field="*{perfil}">
+
+
+                                    <option value="">
+
+                                        Selecione um perfil
+
+                                    </option>
+
+
+                                    <option
+                                        th:each="perfil : ${perfis}"
+                                        th:value="${perfil}"
+                                        th:text="${perfil.descricao}">
+
+                                        Perfil
+
+                                    </option>
+
+
+                                </select>
+
+
+                                <span class="field-help">
+
+                                    Representa a função principal do usuário.
+                                    Os acessos efetivos são definidos logo abaixo.
+
+                                </span>
+
+
+                                <span
+                                    th:if="${#fields.hasErrors('perfil')}"
+                                    th:errors="*{perfil}"
+                                    class="field-error">
+
+                                    Erro no perfil.
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- ==================================================
+                                 ACESSOS
+                            ================================================== -->
+
+                            <div class="access-section">
+
+
+                                <div class="access-section-header">
+
+
+                                    <div class="access-section-title">
+
+
+                                        <i class="bi bi-key"></i>
+
+
+                                        <div>
+
+                                            <strong>
+                                                Acessos do usuário
+                                            </strong>
+
+                                            <span>
+
+                                                Selecione uma ou várias áreas.
+                                                O perfil principal sempre mantém
+                                                seu próprio acesso automaticamente.
+
+                                            </span>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <label
+                                        class="select-all-wrapper"
+                                        for="selecionarTodosAcessos">
+
+                                        <input
+                                            type="checkbox"
+                                            id="selecionarTodosAcessos">
+
+                                        Selecionar todos
+
+                                    </label>
+
+
+                                </div>
+
+
+                                <!-- ==================================================
+                                     BOTÕES DE ACESSO
+                                ================================================== -->
+
+                                <div class="access-grid">
+
+
+                                    <label
+                                        class="access-option"
+                                        th:each="acesso : ${acessosDisponiveis}">
+
+
+                                        <!--
+                                             O checkbox real fica DENTRO do label.
+                                             Isso evita o problema do campo hidden
+                                             criado pelo Thymeleaf.
+                                        -->
+
+                                        <input
+                                            type="checkbox"
+                                            th:field="*{acessos}"
+                                            th:value="${acesso}"
+                                            class="access-checkbox">
+
+
+                                        <div class="access-check-icon">
+
+                                            <i class="bi bi-check-lg"></i>
+
+                                        </div>
+
+
+                                        <div class="access-description">
+
+
+                                            <strong
+                                                th:text="${acesso.descricao}">
+
+                                                Acesso
+
+                                            </strong>
+
+
+                                            <span
+                                                th:switch="${acesso.name()}">
+
+
+                                                <span
+                                                    th:case="'VENDEDOR'">
+
+                                                    Clientes, orçamentos e pedidos
+
+                                                </span>
+
+
+                                                <span
+                                                    th:case="'FINANCEIRO'">
+
+                                                    Análise e liberação financeira
+
+                                                </span>
+
+
+                                                <span
+                                                    th:case="'SUPERVISOR_PRODUCAO'">
+
+                                                    Medição, produção e romaneios
+
+                                                </span>
+
+
+                                                <span
+                                                    th:case="'GERENTE_PRODUCAO'">
+
+                                                    Gerenciamento da produção
+
+                                                </span>
+
+
+                                                <span
+                                                    th:case="'DIRETOR'">
+
+                                                    Visualização gerencial
+
+                                                </span>
+
+
+                                                <span th:case="*">
+
+                                                    Acesso ao sistema
+
+                                                </span>
+
+
+                                            </span>
+
+
+                                        </div>
+
+
+                                    </label>
+
+
+                                </div>
+
+
+                                <div
+                                    id="adminAccessNotice"
+                                    class="admin-access-notice">
+
+
+                                    <i class="bi bi-shield-lock"></i>
+
+
+                                    <span>
+
+                                        O perfil Administrador possui acesso total
+                                        automaticamente. Não é necessário selecionar
+                                        acessos adicionais.
+
+                                    </span>
+
+
+                                </div>
+
+
+                                <span class="field-help">
+
+                                    Exemplo: um usuário pode ser Vendedor e também
+                                    possuir acesso de Supervisor de Produção e Financeiro.
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- ==================================================
+                                 AVISO
+                            ================================================== -->
+
+                            <div class="security-info">
+
+
+                                <i class="bi bi-shield-check"></i>
+
+
+                                <div>
+
+
+                                    <strong>
+                                        Segurança da conta
+                                    </strong>
+
+
+                                    <span>
+
+                                        A edição desta página não altera
+                                        a senha, a foto, o status da conta
+                                        nem a situação do primeiro acesso.
+
+                                        Para redefinir a senha, utilize a
+                                        opção específica na lista de usuários.
+
+                                    </span>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- ==================================================
+                                 AÇÕES
+                            ================================================== -->
+
+                            <div class="form-actions">
+
+
+                                <a
+                                    th:href="@{/usuarios}"
+                                    class="cancel-button">
+
+
+                                    <i class="bi bi-arrow-left"></i>
+
+                                    Cancelar
+
+
+                                </a>
+
+
+                                <button
+                                    type="submit"
+                                    class="save-button">
+
+
+                                    <i class="bi bi-check-lg"></i>
+
+                                    Salvar alterações
+
+
+                                </button>
+
+
+                            </div>
+
+
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+<script>
+
+    /*
+     * ==================================================
+     * MENU MOBILE
+     * ==================================================
+     */
+
+    const button =
+        document.getElementById(
+            "mobileMenuButton"
+        );
+
+
+    const sidebar =
+        document.querySelector(
+            ".sidebar"
+        );
+
+
+    if (button && sidebar) {
+
+
+        button.addEventListener(
+            "click",
+            function () {
+
+
+                sidebar.classList.toggle(
+                    "sidebar-open"
+                );
+
+            }
+        );
+    }
+
+
+    /*
+     * ==================================================
+     * ACESSOS
+     * ==================================================
+     */
+
+    const perfilSelect =
+        document.getElementById(
+            "perfil"
+        );
+
+
+    const selecionarTodos =
+        document.getElementById(
+            "selecionarTodosAcessos"
+        );
+
+
+    const acessos =
+        Array.from(
+            document.querySelectorAll(
+                ".access-checkbox"
+            )
+        );
+
+
+    const adminAccessNotice =
+        document.getElementById(
+            "adminAccessNotice"
+        );
+
+
+    /*
+     * ==================================================
+     * ATUALIZAR VISUAL DE UM ACESSO
+     * ==================================================
+     */
+
+    function atualizarVisualAcesso(
+            checkbox) {
+
+
+        const opcao =
+            checkbox.closest(
+                ".access-option"
+            );
+
+
+        if (!opcao) {
+
+            return;
+        }
+
+
+        opcao.classList.toggle(
+            "selected",
+            checkbox.checked
+        );
+
+
+        opcao.classList.toggle(
+            "disabled",
+            checkbox.disabled
+        );
+    }
+
+
+    /*
+     * ==================================================
+     * ATUALIZAR TODOS OS VISUAIS
+     * ==================================================
+     */
+
+    function atualizarVisuais() {
+
+
+        acessos.forEach(
+            atualizarVisualAcesso
+        );
+    }
+
+
+    /*
+     * ==================================================
+     * SELECIONAR TODOS
+     * ==================================================
+     */
+
+    function atualizarSelecionarTodos() {
+
+
+        if (!selecionarTodos
+                || acessos.length === 0) {
+
+            return;
+        }
+
+
+        const acessosHabilitados =
+            acessos.filter(
+                checkbox =>
+                    !checkbox.disabled
+            );
+
+
+        if (acessosHabilitados.length === 0) {
+
+            selecionarTodos.checked =
+                false;
+
+            return;
+        }
+
+
+        selecionarTodos.checked =
+            acessosHabilitados.every(
+                checkbox =>
+                    checkbox.checked
+            );
+    }
+
+
+    /*
+     * ==================================================
+     * PERFIL ADMIN
+     * ==================================================
+     */
+
+    function atualizarEstadoAdministrador() {
+
+
+        if (!perfilSelect) {
+
+            return;
+        }
+
+
+        const ehAdministrador =
+            perfilSelect.value === "ADMIN";
+
+
+        acessos.forEach(
+            function (checkbox) {
+
+
+                checkbox.disabled =
+                    ehAdministrador;
+
+
+                atualizarVisualAcesso(
+                    checkbox
+                );
+            }
+        );
+
+
+        if (selecionarTodos) {
+
+            selecionarTodos.disabled =
+                ehAdministrador;
+
+
+            if (ehAdministrador) {
+
+                selecionarTodos.checked =
+                    false;
+            }
+        }
+
+
+        if (adminAccessNotice) {
+
+
+            adminAccessNotice.classList.toggle(
+                "active",
+                ehAdministrador
+            );
+        }
+    }
+
+
+    /*
+     * ==================================================
+     * CLIQUE EM ACESSO
+     * ==================================================
+     */
+
+    acessos.forEach(
+        function (checkbox) {
+
+
+            checkbox.addEventListener(
+                "change",
+                function () {
+
+
+                    atualizarVisualAcesso(
+                        checkbox
+                    );
+
+
+                    atualizarSelecionarTodos();
+                }
+            );
+        }
+    );
+
+
+    /*
+     * ==================================================
+     * CLIQUE EM SELECIONAR TODOS
+     * ==================================================
+     */
+
+    if (selecionarTodos) {
+
+
+        selecionarTodos.addEventListener(
+            "change",
+            function () {
+
+
+                acessos.forEach(
+                    function (checkbox) {
+
+
+                        if (!checkbox.disabled) {
+
+
+                            checkbox.checked =
+                                selecionarTodos.checked;
+
+
+                            atualizarVisualAcesso(
+                                checkbox
+                            );
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+
+    /*
+     * ==================================================
+     * ALTERAÇÃO DO PERFIL
+     * ==================================================
+     */
+
+    if (perfilSelect) {
+
+
+        perfilSelect.addEventListener(
+            "change",
+            function () {
+
+
+                atualizarEstadoAdministrador();
+
+                atualizarSelecionarTodos();
+            }
+        );
+    }
+
+
+    /*
+     * ==================================================
+     * ESTADO INICIAL
+     * ==================================================
+     */
+
+    atualizarEstadoAdministrador();
+
+    atualizarVisuais();
+
+    atualizarSelecionarTodos();
+
+</script>
+
+
+</body>
+
+</html>

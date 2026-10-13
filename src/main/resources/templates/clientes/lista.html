@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Clientes | Sistema de Carpintaria
+    </title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/dashboard.css}">
+
+
+    <style>
+
+        body {
+            background: #f5f4f1;
+        }
+
+
+        .clientes-page {
+            padding: 30px;
+        }
+
+
+        /* ==================================================
+           CABEÇALHO
+        ================================================== */
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .page-heading h1 {
+            margin: 5px 0 5px;
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            letter-spacing: -.7px;
+
+            color: #29241f;
+        }
+
+
+        .page-heading p {
+            margin: 0;
+
+            color: #8e867e;
+
+            font-size: 12px;
+        }
+
+
+        .page-label {
+            color: #a87548;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        /* ==================================================
+           BOTÃO NOVO CLIENTE
+        ================================================== */
+
+        .btn-new {
+            min-height: 45px;
+
+            padding: 0 17px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #29241f,
+                    #171513
+                );
+
+            color: #ffffff;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 8px 22px
+                rgba(35, 29, 24, .12);
+
+            transition: .2s;
+        }
+
+
+        .btn-new:hover {
+            color: #ffffff;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 11px 26px
+                rgba(35, 29, 24, .17);
+        }
+
+
+        /* ==================================================
+           PESQUISA
+        ================================================== */
+
+        .search-card {
+            margin-bottom: 18px;
+
+            padding: 17px;
+
+            background: #ffffff;
+
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 14px;
+        }
+
+
+        .search-form {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .search-box {
+            flex: 1;
+
+            position: relative;
+        }
+
+
+        .search-box > i {
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #a39b93;
+
+            font-size: 14px;
+
+            pointer-events: none;
+        }
+
+
+        .search-box input {
+            width: 100%;
+            height: 43px;
+
+            padding:
+                0
+                15px
+                0
+                42px;
+
+            border:
+                1px solid
+                #e0dcd6;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            background: #faf9f7;
+
+            color: #332e29;
+
+            font-size: 12px;
+
+            transition: .2s;
+        }
+
+
+        .search-box input:focus {
+            background: #ffffff;
+
+            border-color: #a97850;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(169, 120, 80, .08);
+        }
+
+
+        .search-button {
+            height: 43px;
+
+            padding:
+                0
+                18px;
+
+            border:
+                1px solid
+                #ddd7d0;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #4e4842;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        .search-button:hover {
+            background: #f6f3ef;
+        }
+
+
+        /* ==================================================
+           CARD DA TABELA
+        ================================================== */
+
+        .clients-card {
+            overflow: hidden;
+
+            background: #ffffff;
+
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 15px;
+        }
+
+
+        .clients-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding:
+                19px
+                21px;
+
+            border-bottom:
+                1px solid
+                #eeeae5;
+        }
+
+
+        .clients-card-header h2 {
+            margin: 0;
+
+            color: #302b26;
+
+            font-size: 15px;
+
+            font-weight: 700;
+        }
+
+
+        .clients-card-header p {
+            margin:
+                4px
+                0
+                0;
+
+            color: #9a928b;
+
+            font-size: 10px;
+        }
+
+
+        .clients-icon {
+            width: 39px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #f2ece6;
+
+            color: #99673f;
+
+            font-size: 16px;
+        }
+
+
+        /* ==================================================
+           TABELA
+        ================================================== */
+
+        .table {
+            margin: 0;
+        }
+
+
+        .table thead th {
+            padding:
+                13px
+                16px;
+
+            border: 0;
+
+            border-bottom:
+                1px solid
+                #ece8e3;
+
+            background: #faf9f7;
+
+            color: #817a73;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: .7px;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+        }
+
+
+        .table tbody td {
+            padding:
+                14px
+                16px;
+
+            border-color: #f0ede9;
+
+            vertical-align: middle;
+
+            color: #554f49;
+
+            font-size: 12px;
+        }
+
+
+        .table tbody tr {
+            transition: .15s;
+        }
+
+
+        .table tbody tr:hover {
+            background: #faf8f5;
+        }
+
+
+        .client-name {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+        }
+
+
+        .client-avatar {
+            width: 36px;
+            height: 36px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #f2ece6;
+
+            color: #9a6840;
+
+            font-size: 15px;
+        }
+
+
+        .client-name strong {
+            display: block;
+
+            color: #302b26;
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+
+        .client-name small {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #a49d96;
+
+            font-size: 9px;
+        }
+
+
+        /* ==================================================
+           AÇÕES
+        ================================================== */
+
+        .actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 6px;
+        }
+
+
+        .action-button {
+            width: 34px;
+            height: 34px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                #e2ddd7;
+
+            border-radius: 9px;
+
+            background: #ffffff;
+
+            color: #69625c;
+
+            text-decoration: none;
+
+            transition: .2s;
+        }
+
+
+        .action-button:hover {
+            background: #f4f0eb;
+
+            border-color: #d5cec6;
+
+            color: #8c5c36;
+        }
+
+
+        .action-delete:hover {
+            background: #fff4f4;
+
+            border-color: #edcccc;
+
+            color: #b84848;
+        }
+
+
+        /* ==================================================
+           VAZIO
+        ================================================== */
+
+        .empty-state {
+            padding:
+                65px
+                20px;
+
+            text-align: center;
+
+            color: #989089;
+        }
+
+
+        .empty-icon {
+            width: 58px;
+            height: 58px;
+
+            margin:
+                0
+                auto
+                15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 15px;
+
+            background: #f3eee8;
+
+            color: #a5744c;
+
+            font-size: 24px;
+        }
+
+
+        .empty-state strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #433c36;
+
+            font-size: 13px;
+        }
+
+
+        .empty-state span {
+            font-size: 11px;
+        }
+
+
+        /* ==================================================
+           RESPONSIVIDADE
+        ================================================== */
+
+        @media (max-width: 768px) {
+
+            .clientes-page {
+                padding: 18px;
+            }
+
+
+            .page-heading {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+
+
+            .btn-new {
+                width: 100%;
+            }
+
+
+            .search-form {
+                flex-direction: column;
+            }
+
+
+            .search-box,
+            .search-button {
+                width: 100%;
+            }
+
+
+            .table {
+                min-width: 750px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app-layout">
+
+
+    <!-- MENU -->
+
+    <aside
+        th:replace="~{fragments/sidebar :: sidebar('clientes')}">
+    </aside>
+
+
+
+    <!-- CONTEÚDO -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+
+            <div class="d-flex align-items-center gap-3">
+
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+
+                <strong>
+                    Clientes
+                </strong>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="clientes-page">
+
+
+            <!-- CABEÇALHO -->
+
+            <div class="page-heading">
+
+
+                <div>
+
+                    <span class="page-label">
+                        CADASTROS
+                    </span>
+
+
+                    <h1>
+                        Clientes
+                    </h1>
+
+
+                    <p>
+                        Consulte e gerencie os clientes cadastrados.
+                    </p>
+
+                </div>
+
+
+
+                <a
+                    th:href="@{/clientes/novo}"
+                    class="btn-new">
+
+                    <i class="bi bi-person-plus"></i>
+
+                    Novo cliente
+
+                </a>
+
+            </div>
+
+
+
+            <!-- MENSAGENS -->
+
+            <div
+                th:if="${sucesso}"
+                class="alert alert-success">
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                <span th:text="${sucesso}">
+                    Operação realizada com sucesso.
+                </span>
+
+            </div>
+
+
+            <div
+                th:if="${erro}"
+                class="alert alert-danger">
+
+                <i class="bi bi-exclamation-circle me-2"></i>
+
+                <span th:text="${erro}">
+                    Não foi possível realizar a operação.
+                </span>
+
+            </div>
+
+
+
+            <!-- PESQUISA -->
+
+            <div class="search-card">
+
+
+                <form
+                    th:action="@{/clientes}"
+                    method="get"
+                    class="search-form">
+
+
+                    <div class="search-box">
+
+                        <i class="bi bi-search"></i>
+
+                        <input
+                            type="text"
+                            name="nome"
+                            th:value="${nome}"
+                            placeholder="Pesquisar cliente pelo nome...">
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="search-button">
+
+                        Pesquisar
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- LISTAGEM -->
+
+            <div class="clients-card">
+
+
+                <div class="clients-card-header">
+
+
+                    <div>
+
+                        <h2>
+                            Clientes cadastrados
+                        </h2>
+
+                        <p>
+                            Lista de clientes registrados no sistema.
+                        </p>
+
+                    </div>
+
+
+                    <div class="clients-icon">
+
+                        <i class="bi bi-people"></i>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TABELA -->
+
+                <div
+                    class="table-responsive"
+                    th:if="${clientes != null and !clientes.isEmpty()}">
+
+
+                    <table class="table">
+
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Cliente</th>
+
+                            <th>CPF / CNPJ</th>
+
+                            <th>Telefone</th>
+
+                            <th>E-mail</th>
+
+                            <th>Cidade</th>
+
+                            <th class="text-end">
+                                Ações
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                        <tr th:each="cliente : ${clientes}">
+
+
+                            <!-- CLIENTE -->
+
+                            <td>
+
+
+                                <div class="client-name">
+
+
+                                    <div class="client-avatar">
+
+                                        <i class="bi bi-person"></i>
+
+                                    </div>
+
+
+                                    <div>
+
+
+                                        <strong
+                                            th:text="${cliente.nomeRazaoSocial}">
+
+                                            Cliente
+
+                                        </strong>
+
+
+                                        <small
+                                            th:text="'ID #' + ${cliente.id}">
+
+                                            ID #1
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+
+                            <!-- CPF / CNPJ -->
+
+                            <td th:text="${cliente.cpfCnpj}">
+                                -
+                            </td>
+
+
+
+                            <!-- TELEFONE -->
+
+                            <td
+                                th:text="${cliente.telefone != null
+                                    and !cliente.telefone.isBlank()
+                                    ? cliente.telefone
+                                    : '-'}">
+
+                                -
+
+                            </td>
+
+
+
+                            <!-- E-MAIL -->
+
+                            <td
+                                th:text="${cliente.email != null
+                                    and !cliente.email.isBlank()
+                                    ? cliente.email
+                                    : '-'}">
+
+                                -
+
+                            </td>
+
+
+
+                            <!-- CIDADE -->
+
+                            <td
+                                th:text="${cliente.cidade != null
+                                    and !cliente.cidade.isBlank()
+                                    ? cliente.cidade
+                                    : '-'}">
+
+                                -
+
+                            </td>
+
+
+
+                            <!-- AÇÕES -->
+
+                            <td>
+
+
+                                <div class="actions">
+
+
+                                    <!-- EDITAR -->
+
+                                    <a
+                                        th:href="@{/clientes/editar/{id}(id=${cliente.id})}"
+                                        class="action-button"
+                                        title="Editar">
+
+                                        <i class="bi bi-pencil"></i>
+
+                                    </a>
+
+
+
+                                    <!-- EXCLUIR -->
+
+                                    <form
+                                        th:action="@{/clientes/excluir/{id}(id=${cliente.id})}"
+                                        method="post"
+                                        onsubmit="return confirm('Deseja realmente excluir este cliente?');">
+
+
+                                        <button
+                                            type="submit"
+                                            class="action-button action-delete"
+                                            title="Excluir">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- SEM CLIENTES -->
+
+                <div
+                    class="empty-state"
+                    th:if="${clientes == null or clientes.isEmpty()}">
+
+
+                    <div class="empty-icon">
+
+                        <i class="bi bi-people"></i>
+
+                    </div>
+
+
+                    <strong>
+                        Nenhum cliente encontrado
+                    </strong>
+
+
+                    <span>
+                        Cadastre um cliente para começar.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+    const button =
+        document.getElementById(
+            "mobileMenuButton"
+        );
+
+
+    const sidebar =
+        document.querySelector(
+            ".sidebar"
+        );
+
+
+    if (button && sidebar) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                sidebar.classList.toggle(
+                    "sidebar-open"
+                );
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+</html>

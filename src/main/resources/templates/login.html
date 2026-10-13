@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Sistema de Carpintaria</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/auth.css}">
+
+</head>
+
+<body>
+
+
+<div class="auth-page">
+
+
+    <!-- ==================================================
+         ÁREA VISUAL
+    ================================================== -->
+
+    <section class="auth-visual">
+
+
+        <div class="shape shape-one"></div>
+        <div class="shape shape-two"></div>
+        <div class="shape shape-three"></div>
+
+
+        <div class="visual-content">
+
+
+            <!-- MARCA -->
+
+            <div class="visual-brand">
+
+                <div class="brand-symbol">
+
+                    <i class="bi bi-hammer"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Sistema de Carpintaria
+                    </strong>
+
+                    <span>
+                        Gestão de produção e entregas
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- TEXTO -->
+
+            <div class="visual-message">
+
+                <span class="visual-label">
+                    GESTÃO INTEGRADA
+                </span>
+
+                <h1>
+                    Controle todo o
+                    <span>processo produtivo</span>
+                    em um só lugar.
+                </h1>
+
+                <p>
+                    Orçamentos, pedidos, financeiro,
+                    produção, romaneios e entregas
+                    integrados em um único sistema.
+                </p>
+
+            </div>
+
+
+            <!-- RECURSOS -->
+
+            <div class="visual-features">
+
+
+                <div class="feature">
+
+                    <i class="bi bi-file-earmark-text"></i>
+
+                    <span>
+                        Pedidos
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <i class="bi bi-hammer"></i>
+
+                    <span>
+                        Produção
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <i class="bi bi-truck"></i>
+
+                    <span>
+                        Entregas
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         LOGIN
+    ================================================== -->
+
+    <section class="auth-login">
+
+
+        <div class="login-container">
+
+
+            <!-- MARCA MOBILE -->
+
+            <div class="mobile-brand">
+
+                <div class="brand-symbol">
+
+                    <i class="bi bi-hammer"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Sistema de Carpintaria
+                    </strong>
+
+                    <span>
+                        Gestão de produção e entregas
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CABEÇALHO -->
+
+            <div class="login-header">
+
+
+                <span class="login-label">
+                    ÁREA RESTRITA
+                </span>
+
+
+                <h2>
+                    Bem-vindo
+                </h2>
+
+
+                <p>
+                    Informe seu usuário e senha
+                    para acessar o sistema.
+                </p>
+
+            </div>
+
+
+            <!-- ==================================================
+                 MENSAGENS
+            ================================================== -->
+
+
+            <div
+                th:if="${param.perfilAtualizado}"
+                class="alert alert-success custom-alert">
+
+                <i class="bi bi-check-circle"></i>
+
+                <span>
+                    Dados atualizados.
+                    Faça login novamente.
+                </span>
+
+            </div>
+
+
+            <div
+                th:if="${param.inativo}"
+                class="alert alert-warning custom-alert">
+
+                <i class="bi bi-exclamation-triangle"></i>
+
+                <span>
+                    Este usuário está inativo.
+                    Procure o administrador do sistema.
+                </span>
+
+            </div>
+
+
+            <div
+                th:if="${param.erro}"
+                class="alert alert-danger custom-alert">
+
+                <i class="bi bi-exclamation-circle"></i>
+
+                <span>
+                    Usuário ou senha inválidos.
+                </span>
+
+            </div>
+
+
+            <div
+                th:if="${param.logout}"
+                class="alert alert-info custom-alert">
+
+                <i class="bi bi-info-circle"></i>
+
+                <span>
+                    Você saiu do sistema.
+                </span>
+
+            </div>
+
+
+            <div
+                th:if="${param.senhaAlterada}"
+                class="alert alert-success custom-alert">
+
+                <i class="bi bi-check-circle"></i>
+
+                <span>
+                    Senha definida com sucesso.
+                    Entre novamente.
+                </span>
+
+            </div>
+
+
+            <!-- ==================================================
+                 FORMULÁRIO
+            ================================================== -->
+
+            <form
+                th:action="@{/login}"
+                method="post">
+
+
+                <!-- USUÁRIO -->
+
+                <div class="form-area">
+
+
+                    <label
+                        for="login"
+                        class="form-label">
+
+                        Usuário
+
+                    </label>
+
+
+                    <div class="input-box">
+
+
+                        <i class="bi bi-person"></i>
+
+
+                        <input
+                            type="text"
+                            id="login"
+                            name="login"
+                            placeholder="Digite seu usuário"
+                            autocomplete="username"
+                            autocapitalize="none"
+                            spellcheck="false"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SENHA -->
+
+                <div class="form-area">
+
+
+                    <label
+                        for="senha"
+                        class="form-label">
+
+                        Senha
+
+                    </label>
+
+
+                    <div class="input-box">
+
+
+                        <i class="bi bi-lock"></i>
+
+
+                        <input
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required>
+
+
+                        <button
+                            type="button"
+                            class="password-button"
+                            onclick="mostrarSenha()">
+
+                            <i
+                                id="iconeSenha"
+                                class="bi bi-eye">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ENTRAR -->
+
+                <button
+                    type="submit"
+                    class="login-button">
+
+
+                    <span>
+                        Entrar
+                    </span>
+
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+
+            <!-- RODAPÉ -->
+
+            <div class="login-footer">
+
+                <i class="bi bi-shield-check"></i>
+
+                <span>
+                    Acesso exclusivo para usuários autorizados
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    function mostrarSenha() {
+
+        const senha =
+            document.getElementById("senha");
+
+        const icone =
+            document.getElementById("iconeSenha");
+
+
+        if (senha.type === "password") {
+
+            senha.type = "text";
+
+            icone.className =
+                "bi bi-eye-slash";
+
+        } else {
+
+            senha.type = "password";
+
+            icone.className =
+                "bi bi-eye";
+        }
+    }
+
+</script>
+
+
+</body>
+</html>

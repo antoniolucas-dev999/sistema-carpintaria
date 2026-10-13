@@ -1,0 +1,817 @@
+/* ==================================================
+   RESET
+================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    min-height: 100%;
+}
+
+
+body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: #f5f4f1;
+    color: #24211e;
+}
+
+
+
+/* ==================================================
+   ESTRUTURA
+================================================== */
+
+.auth-page {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(420px, 1.05fr)
+        minmax(420px, .95fr);
+}
+
+
+
+/* ==================================================
+   LADO VISUAL
+================================================== */
+
+.auth-visual {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 55px 65px;
+
+    display: flex;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171512 0%,
+            #27211b 55%,
+            #3c2d21 100%
+        );
+
+    color: #ffffff;
+}
+
+
+.visual-content {
+    position: relative;
+    z-index: 3;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+
+
+/* ==================================================
+   MARCA
+================================================== */
+
+.visual-brand,
+.mobile-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.brand-symbol {
+    width: 46px;
+    height: 46px;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #c89b65;
+
+    color: #ffffff;
+
+    font-size: 20px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, .15);
+}
+
+
+.visual-brand strong,
+.mobile-brand strong {
+    display: block;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.visual-brand span,
+.mobile-brand span {
+    display: block;
+
+    font-size: 11px;
+
+    margin-top: 2px;
+
+    opacity: .65;
+}
+
+
+
+/* ==================================================
+   TEXTO PRINCIPAL
+================================================== */
+
+.visual-message {
+    max-width: 570px;
+}
+
+
+.visual-label,
+.login-label {
+    display: inline-block;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.7px;
+
+    margin-bottom: 16px;
+}
+
+
+.visual-label {
+    color: #d8b58b;
+}
+
+
+.visual-message h1 {
+    max-width: 560px;
+
+    margin-bottom: 22px;
+
+    font-size: clamp(
+        42px,
+        4.5vw,
+        67px
+    );
+
+    line-height: 1.03;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 700;
+}
+
+
+.visual-message h1 span {
+    color: #d4a56f;
+}
+
+
+.visual-message p {
+    max-width: 490px;
+
+    margin: 0;
+
+    color: rgba(
+        255,
+        255,
+        255,
+        .65
+    );
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+
+
+/* ==================================================
+   RECURSOS
+================================================== */
+
+.visual-features {
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+
+.feature {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        11px
+        15px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .10
+        );
+
+    border-radius: 12px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .78
+        );
+
+    font-size: 12px;
+}
+
+
+.feature i {
+    color: #d3a46d;
+
+    font-size: 15px;
+}
+
+
+
+/* ==================================================
+   FORMAS DECORATIVAS
+================================================== */
+
+.shape {
+    position: absolute;
+
+    border-radius: 50%;
+}
+
+
+.shape-one {
+    width: 470px;
+    height: 470px;
+
+    right: -230px;
+    top: -200px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .08
+        );
+}
+
+
+.shape-two {
+    width: 290px;
+    height: 290px;
+
+    right: -140px;
+    top: -110px;
+
+    background:
+        rgba(
+            201,
+            156,
+            103,
+            .07
+        );
+}
+
+
+.shape-three {
+    width: 380px;
+    height: 380px;
+
+    left: -190px;
+    bottom: -210px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+}
+
+
+
+/* ==================================================
+   ÁREA LOGIN
+================================================== */
+
+.auth-login {
+    padding: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f6f5f2;
+}
+
+
+.login-container {
+    width: 100%;
+
+    max-width: 435px;
+}
+
+
+
+/* ==================================================
+   CABEÇALHO LOGIN
+================================================== */
+
+.login-header {
+    margin-bottom: 32px;
+}
+
+
+.login-label {
+    color: #a1744a;
+}
+
+
+.login-header h2 {
+    margin-bottom: 10px;
+
+    font-size: 39px;
+
+    font-weight: 700;
+
+    letter-spacing: -1.5px;
+
+    color: #24201c;
+}
+
+
+.login-header p {
+    max-width: 360px;
+
+    margin: 0;
+
+    color: #837c75;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+
+/* ==================================================
+   FORMULÁRIO
+================================================== */
+
+.form-area {
+    margin-bottom: 19px;
+}
+
+
+.form-label {
+    margin-bottom: 8px;
+
+    color: #4c4640;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+.input-box {
+    height: 54px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    border:
+        1px solid
+        #dedad4;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    transition: .2s;
+}
+
+
+.input-box:focus-within {
+    border-color: #a87548;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(
+            168,
+            117,
+            72,
+            .09
+        );
+}
+
+
+.input-box > i {
+    width: 48px;
+
+    text-align: center;
+
+    color: #9a9188;
+
+    font-size: 16px;
+}
+
+
+.input-box input {
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    padding:
+        0
+        12px
+        0
+        0;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: #2d2925;
+
+    font-size: 13px;
+}
+
+
+.input-box input::placeholder {
+    color: #aaa39d;
+}
+
+
+
+/* ==================================================
+   MOSTRAR SENHA
+================================================== */
+
+.password-button {
+    width: 48px;
+    height: 100%;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #8b847d;
+
+    transition: .2s;
+}
+
+
+.password-button:hover {
+    color: #9b6940;
+}
+
+
+
+/* ==================================================
+   BOTÃO LOGIN
+================================================== */
+
+.login-button {
+    width: 100%;
+    height: 55px;
+
+    margin-top: 8px;
+
+    padding:
+        0
+        20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #29241f,
+            #171513
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: .25s;
+
+    box-shadow:
+        0 12px 30px
+        rgba(
+            28,
+            23,
+            19,
+            .15
+        );
+}
+
+
+.login-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 16px 35px
+        rgba(
+            28,
+            23,
+            19,
+            .22
+        );
+}
+
+
+.login-button i {
+    font-size: 16px;
+}
+
+
+
+/* ==================================================
+   CADASTRO
+================================================== */
+
+.register-area {
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top:
+        1px solid
+        #e5e1dc;
+
+    text-align: center;
+
+    color: #888079;
+
+    font-size: 12px;
+}
+
+
+.register-area a {
+    margin-left: 4px;
+
+    color: #8b5f39;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.register-area a:hover {
+    text-decoration: underline;
+}
+
+
+
+/* ==================================================
+   ALERTAS
+================================================== */
+
+.custom-alert {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 9px;
+
+    padding: 12px 14px;
+
+    margin-bottom: 20px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+
+/* ==================================================
+   RODAPÉ
+================================================== */
+
+.login-footer {
+    margin-top: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #aaa39b;
+
+    font-size: 10px;
+}
+
+
+.login-footer i {
+    font-size: 12px;
+}
+
+
+
+/* ==================================================
+   MARCA MOBILE
+================================================== */
+
+.mobile-brand {
+    display: none;
+
+    margin-bottom: 42px;
+}
+
+
+.mobile-brand strong {
+    color: #292520;
+}
+
+
+.mobile-brand span {
+    color: #8e867e;
+}
+
+
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (
+    max-width: 980px
+) {
+
+    .auth-page {
+        grid-template-columns:
+            .85fr
+            1fr;
+    }
+
+
+    .auth-visual {
+        padding:
+            45px
+            40px;
+    }
+
+
+    .visual-message h1 {
+        font-size: 45px;
+    }
+
+
+    .auth-login {
+        padding:
+            40px
+            35px;
+    }
+
+}
+
+
+
+/* ==================================================
+   CELULAR
+================================================== */
+
+@media (
+    max-width: 760px
+) {
+
+    .auth-page {
+        display: block;
+
+        min-height: 100vh;
+    }
+
+
+    .auth-visual {
+        display: none;
+    }
+
+
+    .auth-login {
+        min-height: 100vh;
+
+        padding:
+            35px
+            22px;
+
+        align-items: center;
+    }
+
+
+    .login-container {
+        max-width: 440px;
+    }
+
+
+    .mobile-brand {
+        display: flex;
+    }
+
+
+    .login-header h2 {
+        font-size: 34px;
+    }
+
+}
+
+
+
+/* ==================================================
+   TELAS MUITO PEQUENAS
+================================================== */
+
+@media (
+    max-width: 420px
+) {
+
+    .auth-login {
+        padding:
+            28px
+            18px;
+    }
+
+
+    .login-header {
+        margin-bottom: 27px;
+    }
+
+
+    .login-header h2 {
+        font-size: 31px;
+    }
+
+
+    .brand-symbol {
+        width: 42px;
+        height: 42px;
+    }
+
+}

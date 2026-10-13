@@ -1,0 +1,17 @@
+package br.com.carpintaria.carpintaria.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.com.carpintaria.carpintaria.model.Cliente;
+
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+
+    Optional<Cliente> findByCpfCnpj(String cpfCnpj);
+
+    boolean existsByCpfCnpj(String cpfCnpj);
+
+    List<Cliente> findByNomeRazaoSocialContainingIgnoreCase(String nomeRazaoSocial);
+}

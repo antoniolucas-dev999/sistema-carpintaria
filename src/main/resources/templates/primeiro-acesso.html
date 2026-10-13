@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Primeiro Acesso | Sistema de Carpintaria</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4f6f8 0%,
+                    #e9edf1 100%
+                );
+            font-family:
+                Arial,
+                sans-serif;
+        }
+
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+
+        .first-access-card {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 38px;
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.10);
+        }
+
+
+        .icon-area {
+            width: 68px;
+            height: 68px;
+            border-radius: 18px;
+            background: #212529;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+
+
+        .page-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 10px;
+        }
+
+
+        .description {
+            color: #6c757d;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+
+        .user-box {
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+
+        .user-box strong {
+            display: block;
+            color: #212529;
+            font-size: 15px;
+        }
+
+
+        .user-box span {
+            display: block;
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+
+        .form-label {
+            font-weight: 600;
+            color: #343a40;
+        }
+
+
+        .input-group-custom {
+            position: relative;
+        }
+
+
+        .input-group-custom input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            padding:
+                0
+                46px
+                0
+                14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+
+        .input-group-custom input:focus {
+            border-color: #212529;
+            box-shadow:
+                0 0 0 3px
+                rgba(33, 37, 41, 0.08);
+        }
+
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            font-size: 18px;
+        }
+
+
+        .password-hint {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 6px;
+        }
+
+
+        .save-button {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 10px;
+            background: #212529;
+            color: #ffffff;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+
+
+        .save-button:hover {
+            background: #343a40;
+        }
+
+
+        .security-info {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+
+        @media (max-width: 576px) {
+
+            .first-access-card {
+                padding: 28px 22px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="page-wrapper">
+
+
+    <div class="first-access-card">
+
+
+        <!-- ÍCONE -->
+
+        <div class="icon-area">
+
+            <i class="bi bi-shield-lock"></i>
+
+        </div>
+
+
+        <!-- CABEÇALHO -->
+
+        <span class="page-label">
+            PRIMEIRO ACESSO
+        </span>
+
+
+        <h1>
+            Crie sua nova senha
+        </h1>
+
+
+        <p class="description">
+
+            Por segurança, sua senha atual é temporária.
+            Antes de utilizar o sistema, você precisa
+            definir uma senha definitiva.
+
+        </p>
+
+
+        <!-- USUÁRIO -->
+
+        <div class="user-box">
+
+            <strong
+                th:text="${nomeUsuario}">
+                Usuário
+            </strong>
+
+            <span>
+
+                Login:
+
+                <strong
+                    style="display: inline;"
+                    th:text="${loginUsuario}">
+                    usuario
+                </strong>
+
+            </span>
+
+        </div>
+
+
+        <!-- ERRO -->
+
+        <div
+            th:if="${erro}"
+            class="alert alert-danger">
+
+            <i class="bi bi-exclamation-circle me-2"></i>
+
+            <span
+                th:text="${erro}">
+                Erro
+            </span>
+
+        </div>
+
+
+        <!-- FORMULÁRIO -->
+
+        <form
+            th:action="@{/primeiro-acesso}"
+            method="post">
+
+
+            <!-- NOVA SENHA -->
+
+            <div class="mb-4">
+
+
+                <label
+                    for="novaSenha"
+                    class="form-label">
+
+                    Nova senha
+
+                </label>
+
+
+                <div class="input-group-custom">
+
+
+                    <input
+                        type="password"
+                        id="novaSenha"
+                        name="novaSenha"
+                        minlength="6"
+                        autocomplete="new-password"
+                        placeholder="Digite sua nova senha"
+                        required>
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="alternarSenha(
+                            'novaSenha',
+                            'iconeNovaSenha'
+                        )">
+
+
+                        <i
+                            id="iconeNovaSenha"
+                            class="bi bi-eye">
+                        </i>
+
+
+                    </button>
+
+                </div>
+
+
+                <div class="password-hint">
+
+                    A senha deve possuir pelo menos
+                    6 caracteres.
+
+                </div>
+
+            </div>
+
+
+            <!-- CONFIRMAR SENHA -->
+
+            <div class="mb-4">
+
+
+                <label
+                    for="confirmarSenha"
+                    class="form-label">
+
+                    Confirmar nova senha
+
+                </label>
+
+
+                <div class="input-group-custom">
+
+
+                    <input
+                        type="password"
+                        id="confirmarSenha"
+                        name="confirmarSenha"
+                        minlength="6"
+                        autocomplete="new-password"
+                        placeholder="Digite novamente a nova senha"
+                        required>
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="alternarSenha(
+                            'confirmarSenha',
+                            'iconeConfirmarSenha'
+                        )">
+
+
+                        <i
+                            id="iconeConfirmarSenha"
+                            class="bi bi-eye">
+                        </i>
+
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO -->
+
+            <button
+                type="submit"
+                class="save-button">
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                Definir nova senha
+
+            </button>
+
+
+        </form>
+
+
+        <!-- SEGURANÇA -->
+
+        <div class="security-info">
+
+            <i class="bi bi-shield-check"></i>
+
+            <span>
+
+                Sua senha será armazenada de forma
+                protegida. Após a alteração, será
+                necessário entrar novamente no sistema.
+
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    function alternarSenha(
+            campoId,
+            iconeId) {
+
+
+        const campo =
+            document.getElementById(
+                campoId
+            );
+
+
+        const icone =
+            document.getElementById(
+                iconeId
+            );
+
+
+        if (campo.type === "password") {
+
+            campo.type =
+                "text";
+
+            icone.className =
+                "bi bi-eye-slash";
+
+        } else {
+
+            campo.type =
+                "password";
+
+            icone.className =
+                "bi bi-eye";
+        }
+    }
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,1749 @@
+@import url(
+    'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap'
+);
+
+
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family: 'DM Sans', sans-serif;
+
+    background: #f6f5f2;
+
+    color: #24211e;
+}
+
+
+
+/* =========================
+   LAYOUT
+========================= */
+
+.app-layout {
+
+    min-height: 100vh;
+
+    display: flex;
+}
+
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+
+    width: 270px;
+
+    height: 100vh;
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background: #2c2118;
+
+    color: white;
+
+    z-index: 1000;
+
+    transition: .3s;
+}
+
+
+
+/* =========================
+   LOGO
+========================= */
+
+.sidebar-logo {
+
+    min-height: 95px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 20px 25px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+
+.logo-box {
+
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #c79252;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.logo-text {
+
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1.15;
+}
+
+
+.logo-text strong {
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+
+.logo-text span {
+
+    color: #d2a76c;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+
+
+/* =========================
+   MENU
+========================= */
+
+.sidebar-menu {
+
+    padding: 25px 16px;
+
+    flex: 1;
+}
+
+
+.menu-title {
+
+    display: block;
+
+    color:
+        rgba(255,255,255,.38);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    padding: 0 13px;
+
+    margin-bottom: 12px;
+}
+
+
+.menu-item {
+
+    min-height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 0 14px;
+
+    margin-bottom: 6px;
+
+    border-radius: 9px;
+
+    color:
+        rgba(255,255,255,.72);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    transition: .2s;
+}
+
+
+.menu-item i {
+
+    font-size: 18px;
+}
+
+
+.menu-item:hover {
+
+    color: white;
+
+    background:
+        rgba(255,255,255,.07);
+}
+
+
+.menu-item.active {
+
+    background: #c08a4b;
+
+    color: white;
+
+    box-shadow:
+        0 7px 20px
+        rgba(0,0,0,.15);
+}
+
+
+
+/* =========================
+   USUÁRIO SIDEBAR
+========================= */
+
+.sidebar-bottom {
+
+    padding: 18px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+
+.logged-user {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 15px;
+}
+
+
+.user-avatar {
+
+    width: 39px;
+    height: 39px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(255,255,255,.1);
+
+    color: #d4aa70;
+}
+
+
+.user-info {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.user-info strong {
+
+    max-width: 155px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 13px;
+}
+
+
+.user-info span {
+
+    max-width: 155px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 11px;
+
+    color:
+        rgba(255,255,255,.46);
+}
+
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+.logout-button {
+
+    width: 100%;
+
+    min-height: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    border: 1px solid
+        rgba(255,255,255,.12);
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    color:
+        rgba(255,255,255,.72);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.logout-button:hover {
+
+    background:
+        rgba(255,255,255,.1);
+
+    color: white;
+}
+
+
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+.main-content {
+
+    width: calc(
+        100% - 270px
+    );
+
+    min-height: 100vh;
+
+    margin-left: 270px;
+}
+
+
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar {
+
+    height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 35px;
+
+    background: white;
+
+    border-bottom:
+        1px solid #ebe8e2;
+}
+
+
+.mobile-menu-button {
+
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid #e6e1d9;
+
+    border-radius: 8px;
+
+    background: white;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+.topbar-user {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-left: auto;
+}
+
+
+.topbar-user > div:first-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    text-align: right;
+}
+
+
+.topbar-user span {
+
+    color: #8b847b;
+
+    font-size: 11px;
+}
+
+
+.topbar-user strong {
+
+    max-width: 180px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 13px;
+}
+
+
+.top-avatar {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f0e5d8;
+
+    color: #7c5433;
+
+    font-size: 18px;
+}
+
+
+
+/* =========================
+   CONTEÚDO DA PÁGINA
+========================= */
+
+.page-content {
+
+    padding: 38px;
+}
+
+
+.welcome-area {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 32px;
+}
+
+
+.page-label {
+
+    color: #a07240;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.7px;
+}
+
+
+.welcome-area h1 {
+
+    margin-top: 7px;
+
+    margin-bottom: 5px;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    letter-spacing: -1px;
+}
+
+
+.welcome-area p {
+
+    color: #817b73;
+
+    font-size: 14px;
+}
+
+
+
+/* =========================
+   CARDS
+========================= */
+
+.dashboard-cards {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+
+.dashboard-card {
+
+    min-height: 145px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 23px;
+
+    background: white;
+
+    border: 1px solid #ece8e1;
+
+    border-radius: 14px;
+
+    transition: .2s;
+}
+
+
+.dashboard-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 30px
+        rgba(38,28,20,.07);
+}
+
+
+.card-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    min-width: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #f4eadf;
+
+    color: #95683c;
+
+    font-size: 21px;
+}
+
+
+.card-content {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.card-content > span {
+
+    color: #80786f;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+.card-content strong {
+
+    margin: 3px 0;
+
+    color: #29241f;
+
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
+
+.card-content small {
+
+    color: #aaa39b;
+
+    font-size: 10px;
+}
+
+
+.money-value {
+
+    font-size: 21px
+        !important;
+}
+
+
+
+/* =========================
+   GRID INFERIOR
+========================= */
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1.4fr 1fr;
+
+    gap: 20px;
+}
+
+
+.content-card {
+
+    background: white;
+
+    border: 1px solid #ece8e1;
+
+    border-radius: 14px;
+
+    padding: 25px;
+}
+
+
+.content-card-header {
+
+    margin-bottom: 21px;
+}
+
+
+.content-card-header h2 {
+
+    margin: 0 0 4px;
+
+    font-size: 17px;
+
+    font-weight: 700;
+}
+
+
+.content-card-header p {
+
+    margin: 0;
+
+    color: #999188;
+
+    font-size: 12px;
+}
+
+
+
+/* =========================
+   AÇÕES RÁPIDAS
+========================= */
+
+.quick-actions {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.quick-action {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        42px 1fr auto;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 13px;
+
+    border: 1px solid #eee9e2;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.quick-action:hover {
+
+    border-color: #d6c3ae;
+
+    background: #fcfaf7;
+}
+
+
+.quick-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #f5ede4;
+
+    color: #946337;
+}
+
+
+.quick-action > div:nth-child(2) {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.quick-action strong {
+
+    font-size: 13px;
+}
+
+
+.quick-action span {
+
+    color: #9b948c;
+
+    font-size: 11px;
+}
+
+
+.quick-action >
+i:last-child {
+
+    color: #bbb3aa;
+
+    font-size: 12px;
+}
+
+
+
+/* =========================
+   ESTADO VAZIO
+========================= */
+
+.empty-state {
+
+    min-height: 218px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+
+.empty-icon {
+
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 13px;
+
+    border-radius: 50%;
+
+    background: #f4eee7;
+
+    color: #97704d;
+
+    font-size: 20px;
+}
+
+
+.empty-state strong {
+
+    margin-bottom: 4px;
+
+    font-size: 13px;
+}
+
+
+.empty-state span {
+
+    max-width: 220px;
+
+    color: #a39b92;
+
+    font-size: 11px;
+}
+
+
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (
+    max-width: 1200px
+) {
+
+    .dashboard-cards {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (
+    max-width: 900px
+) {
+
+    .sidebar {
+
+        transform:
+            translateX(-100%);
+    }
+
+
+    .sidebar.sidebar-open {
+
+        transform:
+            translateX(0);
+    }
+
+
+    .main-content {
+
+        width: 100%;
+
+        margin-left: 0;
+    }
+
+
+    .mobile-menu-button {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+    }
+
+
+    .dashboard-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+@media (
+    max-width: 600px
+) {
+
+    .topbar {
+
+        padding:
+            0 18px;
+    }
+
+
+    .page-content {
+
+        padding:
+            25px 18px;
+    }
+
+
+    .dashboard-cards {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .welcome-area h1 {
+
+        font-size: 26px;
+    }
+
+
+    .topbar-user >
+    div:first-child {
+
+        display: none;
+    }
+
+}
+
+/* ==================================================
+   MENU LATERAL
+================================================== */
+
+.sidebar {
+    width: 245px;
+
+    min-height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px 16px 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #1d1a17 0%,
+            #25201b 100%
+        );
+
+    border-right:
+        1px solid
+        rgba(255, 255, 255, .05);
+
+    color: #ffffff;
+
+    z-index: 1000;
+
+    box-shadow:
+        8px 0 35px
+        rgba(0, 0, 0, .08);
+}
+
+
+
+/* ==================================================
+   MARCA
+================================================== */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        4px
+        8px
+        25px;
+
+    margin-bottom: 20px;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, .08);
+}
+
+
+.sidebar-brand-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #c99a64,
+            #a87548
+        );
+
+    color: white;
+
+    font-size: 19px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, .18);
+}
+
+
+.sidebar-brand-text strong {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.2;
+}
+
+
+.sidebar-brand-text span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #d5ad7f;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+
+/* ==================================================
+   MENU
+================================================== */
+
+.sidebar-menu {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.menu-title {
+    display: block;
+
+    margin:
+        0
+        10px
+        10px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .35
+        );
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+.menu-item {
+    min-height: 47px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        8px
+        10px;
+
+    border-radius: 11px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .63
+        );
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    transition:
+        background .2s,
+        color .2s,
+        transform .2s;
+}
+
+
+.menu-item:hover {
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .055
+        );
+
+    color: #ffffff;
+
+    transform: translateX(2px);
+}
+
+
+.menu-icon {
+    width: 31px;
+    height: 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    transition: .2s;
+}
+
+
+.menu-item.active {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(201, 154, 100, .20),
+            rgba(168, 117, 72, .10)
+        );
+
+    color: #ffffff;
+}
+
+
+.menu-item.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    width: 3px;
+    height: 22px;
+
+    border-radius:
+        0
+        5px
+        5px
+        0;
+
+    background: #c99a64;
+}
+
+
+.menu-item.active .menu-icon {
+    background:
+        rgba(
+            201,
+            154,
+            100,
+            .16
+        );
+
+    color: #d9ac78;
+}
+
+
+
+/* ==================================================
+   PARTE INFERIOR
+================================================== */
+
+.sidebar-bottom {
+    padding-top: 17px;
+
+    border-top:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .08
+        );
+}
+
+
+.sidebar-security {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 13px;
+
+    padding:
+        9px
+        10px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .45
+        );
+}
+
+
+.sidebar-security > i {
+    color: #b98a59;
+
+    font-size: 15px;
+}
+
+
+.sidebar-security strong {
+    display: block;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .60
+        );
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+
+.sidebar-security span {
+    display: block;
+
+    margin-top: 1px;
+
+    font-size: 9px;
+}
+
+
+
+/* ==================================================
+   SAIR
+================================================== */
+
+.logout-button {
+    width: 100%;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        0
+        13px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .08
+        );
+
+    border-radius: 10px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .035
+        );
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .62
+        );
+
+    font-size: 12px;
+
+    transition: .2s;
+}
+
+
+.logout-button:hover {
+    background:
+        rgba(
+            202,
+            82,
+            82,
+            .10
+        );
+
+    border-color:
+        rgba(
+            202,
+            82,
+            82,
+            .18
+        );
+
+    color: #efb2ae;
+}
+
+
+
+/* ==================================================
+   CONTEÚDO PRINCIPAL
+================================================== */
+
+.main-content {
+    margin-left: 245px;
+
+    width:
+        calc(
+            100% - 245px
+        );
+
+    min-height: 100vh;
+}
+
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform:
+            translateX(-100%);
+
+        transition:
+            transform .25s ease;
+    }
+
+
+    .sidebar.sidebar-open {
+        transform:
+            translateX(0);
+    }
+
+
+    .main-content {
+        margin-left: 0;
+
+        width: 100%;
+    }
+
+}
+/* ==================================================
+   ORÇAMENTOS
+   SIDEBAR COMPACTA NO DESKTOP
+================================================== */
+
+@media (min-width: 901px) {
+
+
+    /*
+     * ESTADO NORMAL
+     *
+     * Dentro do módulo de orçamentos,
+     * a barra fica praticamente recolhida.
+     */
+
+    .sidebar.sidebar-orcamentos {
+
+        width: 68px;
+
+        padding:
+            24px
+            10px
+            18px;
+
+        overflow-x: hidden;
+
+        transition:
+            width .22s ease,
+            padding .22s ease,
+            box-shadow .22s ease;
+    }
+
+
+    /*
+     * PASSOU O MOUSE
+     *
+     * Abre por cima do conteúdo.
+     */
+
+    .sidebar.sidebar-orcamentos:hover {
+
+        width: 245px;
+
+        padding:
+            24px
+            16px
+            18px;
+
+        box-shadow:
+            8px 0 35px
+            rgba(0, 0, 0, .12);
+    }
+
+
+    /*
+     * CONTEÚDO DA PÁGINA
+     *
+     * Continua ocupando praticamente
+     * toda a largura da tela.
+     *
+     * Ao abrir a sidebar, o conteúdo
+     * NÃO é empurrado.
+     */
+
+    .sidebar.sidebar-orcamentos ~ .main-content {
+
+        margin-left: 68px;
+
+        width:
+            calc(
+                100% - 68px
+            );
+    }
+
+
+    /*
+     * ==================================================
+     * MARCA
+     * ==================================================
+     */
+
+    .sidebar.sidebar-orcamentos .sidebar-brand {
+
+        justify-content: center;
+
+        gap: 0;
+
+        padding:
+            4px
+            0
+            25px;
+    }
+
+
+    .sidebar.sidebar-orcamentos:hover .sidebar-brand {
+
+        justify-content: flex-start;
+
+        gap: 12px;
+
+        padding:
+            4px
+            8px
+            25px;
+    }
+
+
+    /*
+     * ==================================================
+     * MENU
+     * ==================================================
+     */
+
+    .sidebar.sidebar-orcamentos .sidebar-menu {
+
+        padding:
+            25px
+            0;
+    }
+
+
+    .sidebar.sidebar-orcamentos .menu-item {
+
+        justify-content: center;
+
+        gap: 0;
+
+        padding:
+            8px
+            0;
+    }
+
+
+    .sidebar.sidebar-orcamentos:hover .menu-item {
+
+        justify-content: flex-start;
+
+        gap: 11px;
+
+        padding:
+            8px
+            10px;
+    }
+
+
+    /*
+     * ==================================================
+     * PARTE INFERIOR
+     * ==================================================
+     */
+
+    .sidebar.sidebar-orcamentos .sidebar-security {
+
+        justify-content: center;
+
+        gap: 0;
+
+        padding:
+            9px
+            0;
+    }
+
+
+    .sidebar.sidebar-orcamentos:hover .sidebar-security {
+
+        justify-content: flex-start;
+
+        gap: 9px;
+
+        padding:
+            9px
+            10px;
+    }
+
+
+    .sidebar.sidebar-orcamentos .logout-button {
+
+        justify-content: center;
+
+        gap: 0;
+
+        padding:
+            0
+            6px;
+    }
+
+
+    .sidebar.sidebar-orcamentos:hover .logout-button {
+
+        justify-content: flex-start;
+
+        gap: 11px;
+
+        padding:
+            0
+            13px;
+    }
+
+
+    /*
+     * ==================================================
+     * ESCONDER TEXTOS
+     * ==================================================
+     */
+
+    .sidebar.sidebar-orcamentos .sidebar-brand-text,
+    .sidebar.sidebar-orcamentos .menu-item > span,
+    .sidebar.sidebar-orcamentos .sidebar-security > div,
+    .sidebar.sidebar-orcamentos .logout-button > span {
+
+        width: 0;
+
+        max-width: 0;
+
+        opacity: 0;
+
+        overflow: hidden;
+
+        white-space: nowrap;
+
+        pointer-events: none;
+
+        transform:
+            translateX(-5px);
+
+        transition:
+            opacity .14s ease,
+            transform .14s ease;
+    }
+
+
+    /*
+     * Quando passa o mouse,
+     * os textos voltam suavemente.
+     */
+
+    .sidebar.sidebar-orcamentos:hover .sidebar-brand-text,
+    .sidebar.sidebar-orcamentos:hover .menu-item > span,
+    .sidebar.sidebar-orcamentos:hover .sidebar-security > div,
+    .sidebar.sidebar-orcamentos:hover .logout-button > span {
+
+        width: auto;
+
+        max-width: 170px;
+
+        opacity: 1;
+
+        pointer-events: auto;
+
+        transform:
+            translateX(0);
+    }
+
+
+    /*
+     * TÍTULO "MENU PRINCIPAL"
+     */
+
+    .sidebar.sidebar-orcamentos .menu-title {
+
+        max-height: 0;
+
+        margin: 0;
+
+        padding: 0;
+
+        opacity: 0;
+
+        overflow: hidden;
+
+        white-space: nowrap;
+    }
+
+
+    .sidebar.sidebar-orcamentos:hover .menu-title {
+
+        max-height: 30px;
+
+        margin:
+            0
+            10px
+            10px;
+
+        opacity: 1;
+    }
+
+
+    /*
+     * ÍCONES SEM DESLOCAMENTO
+     */
+
+    .sidebar.sidebar-orcamentos .menu-icon {
+
+        margin: 0;
+    }
+
+}

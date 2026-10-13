@@ -1,0 +1,2648 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Orçamentos | Sistema de Carpintaria
+    </title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/dashboard.css}">
+
+    <style>
+
+        :root {
+            --budget-bg: #f5f4f1;
+            --budget-card: #ffffff;
+            --budget-border: #e8e3dd;
+            --budget-text: #2c2824;
+            --budget-muted: #8f877f;
+            --budget-accent: #a87548;
+            --budget-accent-soft: #f3ece5;
+            --budget-dark: #211e1b;
+        }
+
+        body {
+            background: var(--budget-bg);
+        }
+
+        .orcamentos-page {
+            padding: 20px 24px 28px;
+        }
+
+        /*
+         * ==================================================
+         * CABEÇALHO
+         * ==================================================
+         */
+
+        .page-heading {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .page-label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--budget-accent);
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1.45px;
+        }
+
+        .page-heading h1 {
+            margin: 0;
+            color: var(--budget-text);
+            font-size: 26px;
+            font-weight: 760;
+            letter-spacing: -.6px;
+        }
+
+        .page-heading p {
+            margin: 5px 0 0;
+            color: var(--budget-muted);
+            font-size: 10px;
+        }
+
+        .btn-new {
+            min-height: 40px;
+            padding: 0 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border: 0;
+            border-radius: 10px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #29241f,
+                    #171513
+                );
+            color: #ffffff;
+            font-size: 10.5px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow:
+                0 8px 20px
+                rgba(35, 29, 24, .12);
+            transition: .18s;
+        }
+
+        .btn-new:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow:
+                0 11px 24px
+                rgba(35, 29, 24, .17);
+        }
+
+        /*
+         * ==================================================
+         * BARRA DE CONTROLE
+         * ==================================================
+         */
+
+        .control-bar {
+            margin-bottom: 16px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--budget-border);
+            border-radius: 13px;
+            background: #ffffff;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .search-box > i {
+            position: absolute;
+            top: 50%;
+            left: 13px;
+            transform: translateY(-50%);
+            color: #9c948c;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 38px;
+            padding: 0 36px 0 37px;
+            border: 1px solid #e0dbd5;
+            border-radius: 9px;
+            outline: none;
+            background: #fbfaf8;
+            color: #342f2a;
+            font-size: 10.5px;
+            transition: .16s;
+        }
+
+        .search-box input:focus {
+            border-color: #aa7a51;
+            background: #ffffff;
+            box-shadow:
+                0 0 0 3px
+                rgba(169, 120, 80, .07);
+        }
+
+        .search-clear {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50%);
+            border: 0;
+            border-radius: 6px;
+            background: transparent;
+            color: #9f968e;
+            font-size: 10px;
+        }
+
+        .search-clear.visible {
+            display: inline-flex;
+        }
+
+        .search-clear:hover {
+            background: #f0ece7;
+            color: #554e47;
+        }
+
+        .status-filters {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            min-height: 32px;
+            padding: 0 10px;
+            border: 1px solid #e1dcd6;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #746c64;
+            font-size: 8.5px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: .15s;
+        }
+
+        .filter-button:hover {
+            border-color: #cdbdaf;
+            color: #725236;
+        }
+
+        .filter-button.active {
+            border-color: #2c2824;
+            background: #2c2824;
+            color: #ffffff;
+        }
+
+        /*
+         * ==================================================
+         * BARRA DE RESUMO
+         * ==================================================
+         */
+
+        .list-head {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .list-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .list-title-icon {
+            width: 31px;
+            height: 31px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: var(--budget-accent-soft);
+            color: #94623a;
+            font-size: 12px;
+        }
+
+        .list-title h2 {
+            margin: 0;
+            color: #3a342f;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .list-title p {
+            margin: 2px 0 0;
+            color: #9a928a;
+            font-size: 8.5px;
+        }
+
+        .visible-count {
+            color: #958c84;
+            font-size: 8.5px;
+            font-weight: 650;
+        }
+
+        /*
+         * ==================================================
+         * CARDS DOS CLIENTES
+         * ==================================================
+         */
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+            gap: 10px;
+        }
+
+        .budget-record {
+            display: none;
+        }
+
+        .budget-record.is-latest {
+            min-height: 145px;
+            padding: 14px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            border: 1px solid var(--budget-border);
+            border-radius: 13px;
+            background: #ffffff;
+            box-shadow:
+                0 3px 12px
+                rgba(49, 42, 36, .025);
+            transition:
+                transform .16s,
+                border-color .16s,
+                box-shadow .16s;
+        }
+
+        .budget-record.is-latest:hover {
+            transform: translateY(-1px);
+            border-color: #d8cdc2;
+            box-shadow:
+                0 8px 21px
+                rgba(49, 42, 36, .055);
+        }
+
+        .budget-record.filtered-out {
+            display: none !important;
+        }
+
+        .client-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .client-identity {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .client-avatar {
+            width: 37px;
+            height: 37px;
+            flex: 0 0 37px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #f1ebe5;
+            color: #93633f;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .client-main {
+            min-width: 0;
+        }
+
+        .client-name {
+            margin: 0;
+            overflow: hidden;
+            color: #302b26;
+            font-size: 12px;
+            font-weight: 760;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .budget-reference {
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            color: #968e86;
+            font-size: 8.5px;
+        }
+
+        .budget-reference strong {
+            color: #71685f;
+            font-weight: 700;
+        }
+
+        /*
+         * ==================================================
+         * STATUS
+         * ==================================================
+         */
+
+        .status-badge {
+            min-height: 25px;
+            padding: 0 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            flex: 0 0 auto;
+            border-radius: 999px;
+            font-size: 7.5px;
+            font-weight: 750;
+            white-space: nowrap;
+        }
+
+        .status-badge::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: .8;
+        }
+
+        .status-rascunho {
+            background: #fbf4eb;
+            color: #95653b;
+        }
+
+        .status-confirmado {
+            background: #edf7f0;
+            color: #3f7551;
+        }
+
+        .status-convertido {
+            background: #edf4f9;
+            color: #486f8c;
+        }
+
+        .status-cancelado {
+            background: #fbefef;
+            color: #9a4e4e;
+        }
+
+        /*
+         * ==================================================
+         * META DO ORÇAMENTO
+         * ==================================================
+         */
+
+        .client-card-middle {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr)
+                auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .budget-meta {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .meta-label {
+            color: #aaa29a;
+            font-size: 7px;
+            font-weight: 750;
+            letter-spacing: .45px;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #5b534c;
+            font-size: 9px;
+            font-weight: 650;
+        }
+
+        .budget-total {
+            color: #2d2925;
+            font-size: 14px;
+            font-weight: 780;
+            white-space: nowrap;
+        }
+
+        /*
+         * ==================================================
+         * RODAPÉ DO CARD
+         * ==================================================
+         */
+
+        .client-card-bottom {
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-top: 1px solid #f0ece8;
+        }
+
+        .history-count {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #9c948c;
+            font-size: 8px;
+        }
+
+        .history-count i {
+            color: #b08059;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .preview-button,
+        .open-button {
+            min-height: 29px;
+            padding: 0 9px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            border-radius: 7px;
+            font-size: 8.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: .15s;
+        }
+
+        .preview-button {
+            border: 1px solid #e0dbd5;
+            background: #ffffff;
+            color: #6f675f;
+        }
+
+        .preview-button:hover {
+            border-color: #cdbdaf;
+            background: #f8f4ef;
+            color: #845a37;
+        }
+
+        .open-button {
+            border: 1px solid #2d2925;
+            background: #2d2925;
+            color: #ffffff;
+        }
+
+        .open-button:hover {
+            background: #171513;
+            color: #ffffff;
+        }
+
+        /*
+         * ==================================================
+         * SEM CLIENTE
+         * ==================================================
+         */
+
+        .budget-record.no-client .client-avatar {
+            background: #f1f0ee;
+            color: #8c857e;
+        }
+
+        .budget-record.no-client .client-name {
+            color: #746d66;
+        }
+
+        /*
+         * ==================================================
+         * ESTADO VAZIO
+         * ==================================================
+         */
+
+        .empty-state {
+            display: none;
+            padding: 55px 20px;
+            border: 1px dashed #dcd5ce;
+            border-radius: 13px;
+            background: rgba(255,255,255,.55);
+            text-align: center;
+        }
+
+        .empty-state.visible {
+            display: block;
+        }
+
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: #f2ece6;
+            color: #9a6a42;
+            font-size: 20px;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 4px;
+            color: #443d37;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .empty-state p {
+            margin: 0;
+            color: #968e86;
+            font-size: 9px;
+        }
+
+        /*
+         * ==================================================
+         * PRÉVIA LATERAL
+         * ==================================================
+         */
+
+        .preview-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: none;
+            background: rgba(25, 22, 19, .30);
+            backdrop-filter: blur(1.5px);
+        }
+
+        .preview-overlay.open {
+            display: block;
+        }
+
+        .preview-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1210;
+            width: min(440px, 92vw);
+            transform: translateX(105%);
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            box-shadow:
+                -18px 0 45px
+                rgba(28, 24, 20, .16);
+            transition: transform .22s ease;
+        }
+
+        .preview-drawer.open {
+            transform: translateX(0);
+        }
+
+        .preview-head {
+            padding: 18px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            border-bottom: 1px solid #ece8e3;
+        }
+
+        .preview-head-label {
+            display: block;
+            margin-bottom: 4px;
+            color: #a87548;
+            font-size: 7.5px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+        }
+
+        .preview-head h3 {
+            margin: 0;
+            color: #2d2925;
+            font-size: 17px;
+            font-weight: 760;
+        }
+
+        .preview-head p {
+            margin: 4px 0 0;
+            color: #9b938b;
+            font-size: 8.5px;
+        }
+
+        .preview-close {
+            width: 31px;
+            height: 31px;
+            flex: 0 0 31px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0dbd5;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #716961;
+        }
+
+        .preview-close:hover {
+            background: #f7f3ef;
+            color: #3e3832;
+        }
+
+        .preview-body {
+            padding: 18px;
+            overflow-y: auto;
+        }
+
+        .preview-status-line {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .preview-total {
+            color: #2c2824;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .preview-grid {
+            margin-bottom: 18px;
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+            gap: 8px;
+        }
+
+        .preview-data {
+            min-height: 57px;
+            padding: 9px 10px;
+            border: 1px solid #ebe6e0;
+            border-radius: 9px;
+            background: #fbfaf8;
+        }
+
+        .preview-data.full {
+            grid-column: 1 / -1;
+        }
+
+        .preview-data span {
+            display: block;
+            margin-bottom: 3px;
+            color: #aaa198;
+            font-size: 7px;
+            font-weight: 750;
+            letter-spacing: .45px;
+            text-transform: uppercase;
+        }
+
+        .preview-data strong {
+            display: block;
+            overflow-wrap: anywhere;
+            color: #514a43;
+            font-size: 9.5px;
+            font-weight: 650;
+        }
+
+        .history-title {
+            margin: 2px 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .history-title strong {
+            color: #4b443e;
+            font-size: 9.5px;
+        }
+
+        .history-title span {
+            color: #a19991;
+            font-size: 8px;
+        }
+
+        .preview-history {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .history-item {
+            min-height: 50px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 1px solid #ece7e2;
+            border-radius: 9px;
+            background: #ffffff;
+            color: inherit;
+            text-decoration: none;
+            transition: .15s;
+        }
+
+        .history-item:hover {
+            border-color: #d5c7bb;
+            background: #fbf8f4;
+        }
+
+        .history-item-main {
+            min-width: 0;
+        }
+
+        .history-item-main strong {
+            display: block;
+            color: #4a433d;
+            font-size: 9px;
+            font-weight: 720;
+        }
+
+        .history-item-main small {
+            display: block;
+            margin-top: 2px;
+            color: #a09890;
+            font-size: 7.5px;
+        }
+
+        .history-item-total {
+            color: #3e3833;
+            font-size: 9px;
+            font-weight: 750;
+            white-space: nowrap;
+        }
+
+        .preview-footer {
+            margin-top: auto;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid #ece8e3;
+            background: #ffffff;
+        }
+
+        .preview-footer .open-button {
+            min-height: 36px;
+            flex: 1;
+            font-size: 9px;
+        }
+
+        body.preview-open {
+            overflow: hidden;
+        }
+
+        /*
+         * ==================================================
+         * RESPONSIVO
+         * ==================================================
+         */
+
+        @media (max-width: 980px) {
+
+            .clients-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .control-bar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .status-filters {
+                width: 100%;
+            }
+
+            .filter-button {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .orcamentos-page {
+                padding: 14px 12px 24px;
+            }
+
+            .page-heading {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .btn-new {
+                width: 100%;
+            }
+
+            .control-bar {
+                padding: 9px;
+            }
+
+            .status-filters {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+
+            .filter-button {
+                flex: 0 0 auto;
+            }
+
+            .client-card-middle {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-total {
+                font-size: 13px;
+            }
+
+            .client-card-bottom {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .card-actions {
+                width: 100%;
+            }
+
+            .preview-button,
+            .open-button {
+                flex: 1;
+            }
+
+            .preview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-data.full {
+                grid-column: 1;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside
+        th:replace="~{fragments/sidebar :: sidebar('orcamentos')}">
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+                <strong>
+                    Orçamentos
+                </strong>
+
+            </div>
+
+        </header>
+
+        <section class="orcamentos-page">
+
+            <div class="page-heading">
+
+                <div>
+
+                    <span class="page-label">
+                        COMERCIAL
+                    </span>
+
+                    <h1>
+                        Orçamentos
+                    </h1>
+
+                    <p>
+                        Continue rapidamente de onde parou com cada cliente.
+                    </p>
+
+                </div>
+
+                <a
+                    th:href="@{/orcamentos/novo}"
+                    class="btn-new">
+
+                    <i class="bi bi-plus-lg"></i>
+
+                    Novo orçamento
+
+                </a>
+
+            </div>
+
+            <div class="control-bar">
+
+                <div class="search-box">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+                        type="text"
+                        id="clientSearch"
+                        th:value="${busca}"
+                        autocomplete="off"
+                        placeholder="Pesquisar cliente, orçamento, obra ou madeira...">
+
+                    <button
+                        type="button"
+                        id="clearSearch"
+                        class="search-clear"
+                        title="Limpar pesquisa">
+
+                        <i class="bi bi-x-lg"></i>
+
+                    </button>
+
+                </div>
+
+                <div class="status-filters">
+
+                    <button
+                        type="button"
+                        class="filter-button active"
+                        data-filter="TODOS">
+
+                        Todos
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filter-button"
+                        data-filter="RASCUNHO">
+
+                        Rascunho
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filter-button"
+                        data-filter="CONFIRMADO">
+
+                        Confirmados
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filter-button"
+                        data-filter="CONVERTIDO_EM_PEDIDO">
+
+                        Em pedido
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="list-head">
+
+                <div class="list-title">
+
+                    <div class="list-title-icon">
+
+                        <i class="bi bi-people"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Clientes recentes
+                        </h2>
+
+                        <p>
+                            Um card por cliente, sempre com o orçamento mais recente.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span
+                    id="visibleCount"
+                    class="visible-count">
+                </span>
+
+            </div>
+
+            <div
+                id="clientsGrid"
+                class="clients-grid"
+                th:if="${orcamentos != null and !orcamentos.isEmpty()}">
+
+                <article
+                    th:each="orcamento : ${orcamentos}"
+                    class="budget-record"
+                    th:classappend="${orcamento.cliente == null ? ' no-client' : ''}"
+                    th:attr="
+                        data-client-key=${orcamento.cliente != null ? 'cliente-' + orcamento.cliente.id : 'sem-cliente-' + orcamento.id},
+                        data-client-name=${orcamento.cliente != null ? orcamento.cliente.nomeRazaoSocial : 'Cliente não definido'},
+                        data-budget-id=${orcamento.id},
+                        data-budget-number=${orcamento.numero},
+                        data-budget-date=${orcamento.dataEmissao},
+                        data-budget-status=${orcamento.status.name()},
+                        data-budget-status-label=${orcamento.status.descricao},
+                        data-budget-total=${orcamento.total},
+                        data-budget-url=@{/orcamentos/{id}(id=${orcamento.id})},
+                        data-budget-obra=${orcamento.obra != null ? orcamento.obra : ''},
+                        data-budget-madeira=${orcamento.tipoMadeira != null ? orcamento.tipoMadeira : ''},
+                        data-budget-observacoes=${orcamento.observacoes != null ? orcamento.observacoes : ''}">
+
+                    <div class="client-card-top">
+
+                        <div class="client-identity">
+
+                            <div
+                                class="client-avatar js-avatar">
+
+                                CL
+
+                            </div>
+
+                            <div class="client-main">
+
+                                <h3
+                                    class="client-name"
+                                    th:text="${orcamento.cliente != null
+                                        ? orcamento.cliente.nomeRazaoSocial
+                                        : 'Cliente não definido'}">
+
+                                    Cliente
+
+                                </h3>
+
+                                <div class="budget-reference">
+
+                                    <span>
+                                        Último:
+                                    </span>
+
+                                    <strong
+                                        th:text="${orcamento.numero}">
+                                        ORC-000001
+                                    </strong>
+
+                                    <span>
+                                        •
+                                    </span>
+
+                                    <span
+                                        th:text="${#temporals.format(
+                                            orcamento.dataEmissao,
+                                            'dd/MM/yyyy'
+                                        )}">
+                                        09/10/2026
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <span
+                            class="status-badge"
+                            th:classappend="${orcamento.status.name() == 'RASCUNHO'
+                                ? ' status-rascunho'
+                                : (
+                                    orcamento.status.name() == 'CONFIRMADO'
+                                    ? ' status-confirmado'
+                                    : (
+                                        orcamento.status.name() == 'CONVERTIDO_EM_PEDIDO'
+                                        ? ' status-convertido'
+                                        : ' status-cancelado'
+                                    )
+                                )}"
+                            th:text="${orcamento.status.descricao}">
+
+                            Rascunho
+
+                        </span>
+
+                    </div>
+
+                    <div class="client-card-middle">
+
+                        <div class="budget-meta">
+
+                            <div class="meta-item">
+
+                                <span class="meta-label">
+                                    Obra
+                                </span>
+
+                                <span
+                                    class="meta-value"
+                                    th:text="${orcamento.obra != null
+                                        && !orcamento.obra.isBlank()
+                                        ? orcamento.obra
+                                        : 'Não informada'}">
+
+                                    Não informada
+
+                                </span>
+
+                            </div>
+
+                            <div class="meta-item">
+
+                                <span class="meta-label">
+                                    Madeira
+                                </span>
+
+                                <span
+                                    class="meta-value"
+                                    th:text="${orcamento.tipoMadeira != null
+                                        && !orcamento.tipoMadeira.isBlank()
+                                        ? orcamento.tipoMadeira
+                                        : 'Não informada'}">
+
+                                    Não informada
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="budget-total">
+
+                            R$
+
+                            <span
+                                th:text="${#numbers.formatDecimal(
+                                    orcamento.total,
+                                    1,
+                                    'POINT',
+                                    2,
+                                    'COMMA'
+                                )}">
+
+                                0,00
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="client-card-bottom">
+
+                        <div class="history-count">
+
+                            <i class="bi bi-clock-history"></i>
+
+                            <span class="js-history-label">
+                                Último orçamento deste cliente
+                            </span>
+
+                        </div>
+
+                        <div class="card-actions">
+
+                            <button
+                                type="button"
+                                class="preview-button js-preview">
+
+                                <i class="bi bi-eye"></i>
+
+                                Prévia
+
+                            </button>
+
+                            <a
+                                th:href="@{/orcamentos/{id}(id=${orcamento.id})}"
+                                class="open-button">
+
+                                <i
+                                    class="bi"
+                                    th:classappend="${orcamento.status.name() == 'CONVERTIDO_EM_PEDIDO'
+                                        or orcamento.status.name() == 'CANCELADO'
+                                        ? ' bi-eye'
+                                        : ' bi-pencil-square'}">
+                                </i>
+
+                                <span
+                                    th:text="${orcamento.status.name() == 'CONVERTIDO_EM_PEDIDO'
+                                        or orcamento.status.name() == 'CANCELADO'
+                                        ? 'Visualizar'
+                                        : 'Editar'}">
+
+                                    Editar
+
+                                </span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <div
+                id="emptyState"
+                class="empty-state">
+
+                <div class="empty-icon">
+
+                    <i class="bi bi-search"></i>
+
+                </div>
+
+                <h3 id="emptyStateTitle">
+                    Nenhum cliente encontrado
+                </h3>
+
+                <p id="emptyStateText">
+                    Ajuste a pesquisa ou o filtro para visualizar outros orçamentos.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div
+    id="previewOverlay"
+    class="preview-overlay">
+</div>
+
+<aside
+    id="previewDrawer"
+    class="preview-drawer"
+    aria-hidden="true">
+
+    <div class="preview-head">
+
+        <div>
+
+            <span class="preview-head-label">
+                PRÉVIA DO ORÇAMENTO
+            </span>
+
+            <h3 id="previewClient">
+                Cliente
+            </h3>
+
+            <p id="previewNumber">
+                ORC-000001
+            </p>
+
+        </div>
+
+        <button
+            type="button"
+            id="previewClose"
+            class="preview-close"
+            title="Fechar">
+
+            <i class="bi bi-x-lg"></i>
+
+        </button>
+
+    </div>
+
+    <div class="preview-body">
+
+        <div class="preview-status-line">
+
+            <span
+                id="previewStatus"
+                class="status-badge status-rascunho">
+
+                Rascunho
+
+            </span>
+
+            <strong
+                id="previewTotal"
+                class="preview-total">
+
+                R$ 0,00
+
+            </strong>
+
+        </div>
+
+        <div class="preview-grid">
+
+            <div class="preview-data">
+
+                <span>
+                    Data
+                </span>
+
+                <strong id="previewDate">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="preview-data">
+
+                <span>
+                    Obra
+                </span>
+
+                <strong id="previewObra">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="preview-data">
+
+                <span>
+                    Madeira
+                </span>
+
+                <strong id="previewMadeira">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="preview-data">
+
+                <span>
+                    Situação
+                </span>
+
+                <strong id="previewSituation">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="preview-data full">
+
+                <span>
+                    Observações
+                </span>
+
+                <strong id="previewObservacoes">
+                    Sem observações
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="history-title">
+
+            <strong>
+                Histórico do cliente
+            </strong>
+
+            <span id="previewHistoryCount">
+                1 orçamento
+            </span>
+
+        </div>
+
+        <div
+            id="previewHistory"
+            class="preview-history">
+        </div>
+
+    </div>
+
+    <div class="preview-footer">
+
+        <a
+            id="previewOpen"
+            href="#"
+            class="open-button">
+
+            <i class="bi bi-box-arrow-up-right"></i>
+
+            Abrir orçamento
+
+        </a>
+
+    </div>
+
+</aside>
+
+<script>
+
+    let filtroAtual =
+        "TODOS";
+
+
+    /*
+     * ==================================================
+     * PREPARAR CARDS
+     * ==================================================
+     */
+
+    function prepararOrcamentos() {
+
+        const registros =
+            Array.from(
+                document.querySelectorAll(
+                    ".budget-record"
+                )
+            );
+
+        if (registros.length === 0) {
+
+            mostrarEstadoVazio(
+                true,
+                "Nenhum orçamento cadastrado",
+                "Crie um novo orçamento para começar."
+            );
+
+            atualizarContador();
+
+            return;
+        }
+
+
+        registros.sort(
+            function (a, b) {
+
+                return Number(
+                    b.dataset.budgetId
+                )
+                - Number(
+                    a.dataset.budgetId
+                );
+            }
+        );
+
+
+        const clientesMostrados =
+            new Set();
+
+
+        registros.forEach(
+            function (registro) {
+
+                registro.classList.remove(
+                    "is-latest"
+                );
+
+                const chave =
+                    registro.dataset.clientKey;
+
+                if (!clientesMostrados.has(
+                        chave
+                    )) {
+
+                    registro.classList.add(
+                        "is-latest"
+                    );
+
+                    clientesMostrados.add(
+                        chave
+                    );
+                }
+            }
+        );
+
+
+        document
+            .querySelectorAll(
+                ".budget-record.is-latest"
+            )
+            .forEach(
+                function (registro) {
+
+                    atualizarCardCliente(
+                        registro
+                    );
+                }
+            );
+
+
+        aplicarFiltros();
+    }
+
+
+    function atualizarCardCliente(
+            registro) {
+
+        const nome =
+            registro.dataset.clientName
+            || "Cliente";
+
+
+        const avatar =
+            registro.querySelector(
+                ".js-avatar"
+            );
+
+
+        if (avatar) {
+
+            avatar.textContent =
+                gerarIniciais(
+                    nome
+                );
+        }
+
+
+        const historico =
+            buscarHistoricoCliente(
+                registro.dataset.clientKey
+            );
+
+
+        const label =
+            registro.querySelector(
+                ".js-history-label"
+            );
+
+
+        if (label) {
+
+            const anteriores =
+                Math.max(
+                    0,
+                    historico.length - 1
+                );
+
+
+            if (anteriores === 0) {
+
+                label.textContent =
+                    "Primeiro orçamento deste cliente";
+
+            } else if (anteriores === 1) {
+
+                label.textContent =
+                    "1 orçamento anterior";
+
+            } else {
+
+                label.textContent =
+                    anteriores
+                    + " orçamentos anteriores";
+            }
+        }
+    }
+
+
+    function gerarIniciais(
+            nome) {
+
+        if (!nome
+                || nome === "Cliente não definido") {
+
+            return "—";
+        }
+
+
+        const partes =
+            nome
+                .trim()
+                .split(
+                    /\s+/
+                )
+                .filter(Boolean);
+
+
+        if (partes.length === 0) {
+
+            return "CL";
+        }
+
+
+        if (partes.length === 1) {
+
+            return partes[0]
+                .substring(
+                    0,
+                    2
+                )
+                .toUpperCase();
+        }
+
+
+        return (
+            partes[0][0]
+            + partes[
+                partes.length - 1
+            ][0]
+        ).toUpperCase();
+    }
+
+
+    /*
+     * ==================================================
+     * PESQUISA E FILTROS
+     * ==================================================
+     */
+
+    function configurarPesquisa() {
+
+        const input =
+            document.getElementById(
+                "clientSearch"
+            );
+
+
+        const limpar =
+            document.getElementById(
+                "clearSearch"
+            );
+
+
+        if (input) {
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    atualizarBotaoLimpar();
+
+                    aplicarFiltros();
+                }
+            );
+        }
+
+
+        if (limpar) {
+
+            limpar.addEventListener(
+                "click",
+                function () {
+
+                    if (!input) {
+
+                        return;
+                    }
+
+
+                    input.value =
+                        "";
+
+                    input.focus();
+
+                    atualizarBotaoLimpar();
+
+                    aplicarFiltros();
+                }
+            );
+        }
+
+
+        document
+            .querySelectorAll(
+                ".filter-button"
+            )
+            .forEach(
+                function (botao) {
+
+                    botao.addEventListener(
+                        "click",
+                        function () {
+
+                            filtroAtual =
+                                botao.dataset.filter;
+
+                            document
+                                .querySelectorAll(
+                                    ".filter-button"
+                                )
+                                .forEach(
+                                    function (item) {
+
+                                        item.classList.remove(
+                                            "active"
+                                        );
+                                    }
+                                );
+
+                            botao.classList.add(
+                                "active"
+                            );
+
+                            aplicarFiltros();
+                        }
+                    );
+                }
+            );
+
+
+        atualizarBotaoLimpar();
+    }
+
+
+    function aplicarFiltros() {
+
+        const input =
+            document.getElementById(
+                "clientSearch"
+            );
+
+
+        const busca =
+            normalizarTexto(
+                input
+                    ? input.value
+                    : ""
+            );
+
+
+        let visiveis =
+            0;
+
+
+        document
+            .querySelectorAll(
+                ".budget-record.is-latest"
+            )
+            .forEach(
+                function (registro) {
+
+                    const textoBusca =
+                        normalizarTexto(
+                            [
+                                registro.dataset.clientName,
+                                registro.dataset.budgetNumber,
+                                registro.dataset.budgetObra,
+                                registro.dataset.budgetMadeira
+                            ]
+                            .filter(Boolean)
+                            .join(
+                                " "
+                            )
+                        );
+
+
+                    const combinaBusca =
+                        !busca
+                        || textoBusca.includes(
+                            busca
+                        );
+
+
+                    const combinaStatus =
+                        filtroAtual === "TODOS"
+                        || registro.dataset.budgetStatus
+                            === filtroAtual;
+
+
+                    const mostrar =
+                        combinaBusca
+                        && combinaStatus;
+
+
+                    registro.classList.toggle(
+                        "filtered-out",
+                        !mostrar
+                    );
+
+
+                    if (mostrar) {
+
+                        visiveis++;
+                    }
+                }
+            );
+
+
+        mostrarEstadoVazio(
+            visiveis === 0,
+            "Nenhum cliente encontrado",
+            "Ajuste a pesquisa ou o filtro para visualizar outros orçamentos."
+        );
+
+
+        atualizarContador(
+            visiveis
+        );
+    }
+
+
+    function normalizarTexto(
+            valor) {
+
+        return String(
+            valor || ""
+        )
+        .normalize(
+            "NFD"
+        )
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .toLowerCase()
+        .trim();
+    }
+
+
+    function atualizarBotaoLimpar() {
+
+        const input =
+            document.getElementById(
+                "clientSearch"
+            );
+
+
+        const botao =
+            document.getElementById(
+                "clearSearch"
+            );
+
+
+        if (!input
+                || !botao) {
+
+            return;
+        }
+
+
+        botao.classList.toggle(
+            "visible",
+            input.value.trim().length > 0
+        );
+    }
+
+
+    function atualizarContador(
+            quantidade) {
+
+        const contador =
+            document.getElementById(
+                "visibleCount"
+            );
+
+
+        if (!contador) {
+
+            return;
+        }
+
+
+        if (quantidade === undefined) {
+
+            quantidade =
+                document.querySelectorAll(
+                    ".budget-record.is-latest:not(.filtered-out)"
+                ).length;
+        }
+
+
+        contador.textContent =
+            quantidade === 1
+            ? "1 cliente"
+            : quantidade + " clientes";
+    }
+
+
+    function mostrarEstadoVazio(
+            mostrar,
+            titulo,
+            texto) {
+
+        const estado =
+            document.getElementById(
+                "emptyState"
+            );
+
+
+        if (!estado) {
+
+            return;
+        }
+
+
+        estado.classList.toggle(
+            "visible",
+            mostrar
+        );
+
+
+        const tituloElemento =
+            document.getElementById(
+                "emptyStateTitle"
+            );
+
+
+        const textoElemento =
+            document.getElementById(
+                "emptyStateText"
+            );
+
+
+        if (tituloElemento
+                && titulo) {
+
+            tituloElemento.textContent =
+                titulo;
+        }
+
+
+        if (textoElemento
+                && texto) {
+
+            textoElemento.textContent =
+                texto;
+        }
+    }
+
+
+    /*
+     * ==================================================
+     * PRÉVIA
+     * ==================================================
+     */
+
+    function configurarPrevia() {
+
+        document
+            .querySelectorAll(
+                ".js-preview"
+            )
+            .forEach(
+                function (botao) {
+
+                    botao.addEventListener(
+                        "click",
+                        function () {
+
+                            const registro =
+                                botao.closest(
+                                    ".budget-record"
+                                );
+
+
+                            if (registro) {
+
+                                abrirPrevia(
+                                    registro
+                                );
+                            }
+                        }
+                    );
+                }
+            );
+
+
+        const fechar =
+            document.getElementById(
+                "previewClose"
+            );
+
+
+        const overlay =
+            document.getElementById(
+                "previewOverlay"
+            );
+
+
+        if (fechar) {
+
+            fechar.addEventListener(
+                "click",
+                fecharPrevia
+            );
+        }
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                fecharPrevia
+            );
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    fecharPrevia();
+                }
+            }
+        );
+    }
+
+
+    function abrirPrevia(
+            registro) {
+
+        const drawer =
+            document.getElementById(
+                "previewDrawer"
+            );
+
+
+        const overlay =
+            document.getElementById(
+                "previewOverlay"
+            );
+
+
+        if (!drawer
+                || !overlay) {
+
+            return;
+        }
+
+
+        definirTexto(
+            "previewClient",
+            registro.dataset.clientName
+            || "Cliente não definido"
+        );
+
+
+        definirTexto(
+            "previewNumber",
+            registro.dataset.budgetNumber
+            || "-"
+        );
+
+
+        definirTexto(
+            "previewTotal",
+            "R$ "
+            + formatarMoeda(
+                registro.dataset.budgetTotal
+            )
+        );
+
+
+        definirTexto(
+            "previewDate",
+            formatarData(
+                registro.dataset.budgetDate
+            )
+        );
+
+
+        definirTexto(
+            "previewObra",
+            valorOuTraco(
+                registro.dataset.budgetObra
+            )
+        );
+
+
+        definirTexto(
+            "previewMadeira",
+            valorOuTraco(
+                registro.dataset.budgetMadeira
+            )
+        );
+
+
+        definirTexto(
+            "previewSituation",
+            registro.dataset.budgetStatusLabel
+            || "-"
+        );
+
+
+        definirTexto(
+            "previewObservacoes",
+            registro.dataset.budgetObservacoes
+                && registro.dataset.budgetObservacoes.trim()
+                ? registro.dataset.budgetObservacoes
+                : "Sem observações"
+        );
+
+
+        const status =
+            document.getElementById(
+                "previewStatus"
+            );
+
+
+        if (status) {
+
+            status.className =
+                "status-badge "
+                + classeStatus(
+                    registro.dataset.budgetStatus
+                );
+
+
+            status.textContent =
+                registro.dataset.budgetStatusLabel
+                || "-";
+        }
+
+
+        const abrir =
+            document.getElementById(
+                "previewOpen"
+            );
+
+
+        if (abrir) {
+
+            abrir.href =
+                registro.dataset.budgetUrl
+                || "#";
+
+
+            const somenteVisualizacao =
+                registro.dataset.budgetStatus
+                    === "CONVERTIDO_EM_PEDIDO"
+                || registro.dataset.budgetStatus
+                    === "CANCELADO";
+
+
+            abrir.innerHTML =
+                somenteVisualizacao
+                ? '<i class="bi bi-eye"></i> Visualizar orçamento'
+                : '<i class="bi bi-pencil-square"></i> Editar orçamento';
+        }
+
+
+        montarHistorico(
+            registro.dataset.clientKey
+        );
+
+
+        overlay.classList.add(
+            "open"
+        );
+
+
+        drawer.classList.add(
+            "open"
+        );
+
+
+        drawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.classList.add(
+            "preview-open"
+        );
+    }
+
+
+    function fecharPrevia() {
+
+        const drawer =
+            document.getElementById(
+                "previewDrawer"
+            );
+
+
+        const overlay =
+            document.getElementById(
+                "previewOverlay"
+            );
+
+
+        if (drawer) {
+
+            drawer.classList.remove(
+                "open"
+            );
+
+
+            drawer.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        }
+
+
+        if (overlay) {
+
+            overlay.classList.remove(
+                "open"
+            );
+        }
+
+
+        document.body.classList.remove(
+            "preview-open"
+        );
+    }
+
+
+    function buscarHistoricoCliente(
+            clientKey) {
+
+        return Array
+            .from(
+                document.querySelectorAll(
+                    ".budget-record"
+                )
+            )
+            .filter(
+                function (registro) {
+
+                    return registro.dataset.clientKey
+                        === clientKey;
+                }
+            )
+            .sort(
+                function (a, b) {
+
+                    return Number(
+                        b.dataset.budgetId
+                    )
+                    - Number(
+                        a.dataset.budgetId
+                    );
+                }
+            );
+    }
+
+
+    function montarHistorico(
+            clientKey) {
+
+        const historico =
+            buscarHistoricoCliente(
+                clientKey
+            );
+
+
+        const container =
+            document.getElementById(
+                "previewHistory"
+            );
+
+
+        const contador =
+            document.getElementById(
+                "previewHistoryCount"
+            );
+
+
+        if (contador) {
+
+            contador.textContent =
+                historico.length === 1
+                ? "1 orçamento"
+                : historico.length
+                    + " orçamentos";
+        }
+
+
+        if (!container) {
+
+            return;
+        }
+
+
+        container.innerHTML =
+            "";
+
+
+        historico.forEach(
+            function (registro) {
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.className =
+                    "history-item";
+
+
+                link.href =
+                    registro.dataset.budgetUrl
+                    || "#";
+
+
+                link.innerHTML =
+                    `
+                        <div class="history-item-main">
+                            <strong>
+                                ${escaparHtml(
+                                    registro.dataset.budgetNumber
+                                    || "-"
+                                )}
+                            </strong>
+                            <small>
+                                ${escaparHtml(
+                                    formatarData(
+                                        registro.dataset.budgetDate
+                                    )
+                                )}
+                                •
+                                ${escaparHtml(
+                                    registro.dataset.budgetStatusLabel
+                                    || "-"
+                                )}
+                            </small>
+                        </div>
+
+                        <span class="history-item-total">
+                            R$
+                            ${escaparHtml(
+                                formatarMoeda(
+                                    registro.dataset.budgetTotal
+                                )
+                            )}
+                        </span>
+                    `;
+
+
+                container.appendChild(
+                    link
+                );
+            }
+        );
+    }
+
+
+    /*
+     * ==================================================
+     * FORMATAÇÃO
+     * ==================================================
+     */
+
+    function formatarMoeda(
+            valor) {
+
+        const numero =
+            Number(
+                valor || 0
+            );
+
+
+        if (!Number.isFinite(
+                numero
+            )) {
+
+            return "0,00";
+        }
+
+
+        return numero.toLocaleString(
+            "pt-BR",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
+    }
+
+
+    function formatarData(
+            valor) {
+
+        if (!valor) {
+
+            return "-";
+        }
+
+
+        const partes =
+            String(
+                valor
+            ).split(
+                "-"
+            );
+
+
+        if (partes.length !== 3) {
+
+            return valor;
+        }
+
+
+        return partes[2]
+            + "/"
+            + partes[1]
+            + "/"
+            + partes[0];
+    }
+
+
+    function classeStatus(
+            status) {
+
+        if (status === "RASCUNHO") {
+
+            return "status-rascunho";
+        }
+
+
+        if (status === "CONFIRMADO") {
+
+            return "status-confirmado";
+        }
+
+
+        if (status === "CONVERTIDO_EM_PEDIDO") {
+
+            return "status-convertido";
+        }
+
+
+        return "status-cancelado";
+    }
+
+
+    function valorOuTraco(
+            valor) {
+
+        return valor
+                && String(
+                    valor
+                ).trim()
+            ? valor
+            : "-";
+    }
+
+
+    function definirTexto(
+            id,
+            valor) {
+
+        const elemento =
+            document.getElementById(
+                id
+            );
+
+
+        if (elemento) {
+
+            elemento.textContent =
+                valor;
+        }
+    }
+
+
+    function escaparHtml(
+            valor) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            valor ?? "";
+
+
+        return div.innerHTML;
+    }
+
+
+    /*
+     * ==================================================
+     * MENU MOBILE
+     * ==================================================
+     */
+
+    function configurarMenuMobile() {
+
+        const button =
+            document.getElementById(
+                "mobileMenuButton"
+            );
+
+
+        const sidebar =
+            document.querySelector(
+                ".sidebar"
+            );
+
+
+        if (button
+                && sidebar) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "sidebar-open"
+                    );
+                }
+            );
+        }
+    }
+
+
+    /*
+     * ==================================================
+     * INICIALIZAÇÃO
+     * ==================================================
+     */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            prepararOrcamentos();
+
+            configurarPesquisa();
+
+            configurarPrevia();
+
+            configurarMenuMobile();
+
+            aplicarFiltros();
+        }
+    );
+
+</script>
+
+</body>
+
+</html>

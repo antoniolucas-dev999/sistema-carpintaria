@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Novo Usuário | Sistema de Carpintaria</title>
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/dashboard.css}">
+
+
+    <style>
+
+        body {
+            background: #f5f4f1;
+        }
+
+
+        .user-form-page {
+            padding: 30px;
+        }
+
+
+        /* ==================================================
+           CABEÇALHO
+        ================================================== */
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .page-label {
+            color: #a87548;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .page-heading h1 {
+            margin: 5px 0;
+
+            color: #29241f;
+
+            font-size: 29px;
+            font-weight: 700;
+
+            letter-spacing: -.8px;
+        }
+
+
+        .page-heading p {
+            margin: 0;
+
+            color: #8e867e;
+
+            font-size: 12px;
+        }
+
+
+        .heading-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #29241f,
+                    #171513
+                );
+
+            color: #d3a46f;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 10px 25px
+                rgba(35, 29, 24, .12);
+        }
+
+
+        /* ==================================================
+           LAYOUT
+        ================================================== */
+
+        .form-layout {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                320px;
+
+            gap: 18px;
+
+            align-items: start;
+        }
+
+
+        /* ==================================================
+           CARD
+        ================================================== */
+
+        .form-card {
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 15px;
+
+            background: #ffffff;
+
+            overflow: hidden;
+        }
+
+
+        .form-card-header {
+            padding:
+                19px
+                21px;
+
+            border-bottom:
+                1px solid
+                #eeeae5;
+        }
+
+
+        .form-card-header h2 {
+            margin: 0;
+
+            color: #302a25;
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        .form-card-header p {
+            margin:
+                4px
+                0
+                0;
+
+            color: #999189;
+
+            font-size: 10px;
+        }
+
+
+        .form-card-body {
+            padding: 22px;
+        }
+
+
+        /* ==================================================
+           CAMPOS
+        ================================================== */
+
+        .field-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #514a44;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: .3px;
+        }
+
+
+        .required {
+            color: #a65c4a;
+        }
+
+
+        .form-control,
+        .form-select {
+            min-height: 44px;
+
+            border:
+                1px solid
+                #ded9d3;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #3e3833;
+
+            font-size: 12px;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #b58a63;
+
+            box-shadow:
+                0 0 0 .2rem
+                rgba(181, 138, 99, .10);
+        }
+
+
+        .form-control::placeholder {
+            color: #b1aaa3;
+        }
+
+
+        .field-help {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #9d958d;
+
+            font-size: 9px;
+        }
+
+
+        .field-error {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #a44d41;
+
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+
+        /* ==================================================
+           BOTÕES
+        ================================================== */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 9px;
+
+            padding:
+                17px
+                22px;
+
+            border-top:
+                1px solid
+                #eeeae5;
+
+            background: #faf9f7;
+        }
+
+
+        .cancel-button,
+        .save-button {
+            min-height: 40px;
+
+            padding:
+                0
+                16px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            border-radius: 9px;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: .2s;
+        }
+
+
+        .cancel-button {
+            border:
+                1px solid
+                #ded8d1;
+
+            background: #ffffff;
+
+            color: #706860;
+        }
+
+
+        .cancel-button:hover {
+            background: #f5f2ee;
+
+            color: #514a44;
+        }
+
+
+        .save-button {
+            border:
+                1px solid
+                #29241f;
+
+            background: #29241f;
+
+            color: #ffffff;
+        }
+
+
+        .save-button:hover {
+            background: #171513;
+
+            color: #ffffff;
+        }
+
+
+        /* ==================================================
+           INFORMAÇÕES
+        ================================================== */
+
+        .info-card {
+            padding: 20px;
+
+            border:
+                1px solid
+                #e9e5df;
+
+            border-radius: 15px;
+
+            background: #ffffff;
+        }
+
+
+        .info-icon {
+            width: 42px;
+            height: 42px;
+
+            margin-bottom: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #f2ece6;
+
+            color: #99673f;
+
+            font-size: 17px;
+        }
+
+
+        .info-card h3 {
+            margin:
+                0
+                0
+                7px;
+
+            color: #39332e;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        .info-card > p {
+            margin:
+                0
+                0
+                16px;
+
+            color: #918980;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 9px;
+
+            padding:
+                11px
+                0;
+
+            border-top:
+                1px solid
+                #f0ede9;
+        }
+
+
+        .info-item i {
+            margin-top: 2px;
+
+            color: #a87548;
+
+            font-size: 13px;
+        }
+
+
+        .info-item strong {
+            display: block;
+
+            color: #4d4640;
+
+            font-size: 10px;
+        }
+
+
+        .info-item span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #9b938b;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+        }
+
+
+        .temporary-password {
+            display: inline-block;
+
+            margin-top: 4px;
+
+            padding:
+                5px
+                8px;
+
+            border-radius: 6px;
+
+            background: #f3eee8;
+
+            color: #78583e;
+
+            font-family: monospace;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+
+        /* ==================================================
+           MOBILE
+        ================================================== */
+
+        @media (max-width: 950px) {
+
+            .form-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            .user-form-page {
+                padding: 18px;
+            }
+
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+
+
+            .heading-icon {
+                width: 45px;
+                height: 45px;
+
+                font-size: 17px;
+            }
+
+
+            .form-card-body {
+                padding: 18px;
+            }
+
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+
+            .cancel-button,
+            .save-button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app-layout">
+
+
+    <!-- ==================================================
+         MENU
+    ================================================== -->
+
+    <aside
+        th:replace="~{fragments/sidebar :: sidebar('usuarios')}">
+
+    </aside>
+
+
+    <!-- ==================================================
+         CONTEÚDO
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+
+            <div class="d-flex align-items-center gap-3">
+
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+
+                <strong>
+                    Novo Usuário
+                </strong>
+
+
+            </div>
+
+
+        </header>
+
+
+        <section class="user-form-page">
+
+
+            <!-- ==================================================
+                 CABEÇALHO
+            ================================================== -->
+
+            <div class="page-heading">
+
+
+                <div>
+
+
+                    <span class="page-label">
+                        CONTROLE DE ACESSO
+                    </span>
+
+
+                    <h1>
+                        Novo Usuário
+                    </h1>
+
+
+                    <p>
+                        Cadastre um novo colaborador
+                        e defina seu perfil de acesso.
+                    </p>
+
+
+                </div>
+
+
+                <div class="heading-icon">
+
+                    <i class="bi bi-person-plus"></i>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ==================================================
+                 ERRO GERAL
+            ================================================== -->
+
+            <div
+                th:if="${erro}"
+                class="alert alert-danger">
+
+                <i class="bi bi-exclamation-circle me-2"></i>
+
+                <span
+                    th:text="${erro}">
+
+                    Não foi possível criar o usuário.
+
+                </span>
+
+            </div>
+
+
+            <!-- ==================================================
+                 CONTEÚDO
+            ================================================== -->
+
+            <div class="form-layout">
+
+
+                <!-- FORMULÁRIO -->
+
+                <form
+                    th:action="@{/usuarios/novo}"
+                    th:object="${cadastro}"
+                    method="post"
+                    class="form-card">
+
+
+                    <div class="form-card-header">
+
+
+                        <h2>
+                            Dados do usuário
+                        </h2>
+
+
+                        <p>
+                            Informe os dados básicos
+                            e selecione o perfil de acesso.
+                        </p>
+
+
+                    </div>
+
+
+                    <div class="form-card-body">
+
+
+                        <div class="row g-3">
+
+
+                            <!-- NOME -->
+
+                            <div class="col-12">
+
+
+                                <label
+                                    for="nome"
+                                    class="field-label">
+
+                                    Nome completo
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="nome"
+                                    class="form-control"
+                                    th:field="*{nome}"
+                                    placeholder="Ex.: Lucas Souza"
+                                    autocomplete="off">
+
+
+                                <span
+                                    class="field-error"
+                                    th:if="${#fields.hasErrors('nome')}"
+                                    th:errors="*{nome}">
+
+                                    Erro no nome
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- LOGIN -->
+
+                            <div class="col-md-6">
+
+
+                                <label
+                                    for="login"
+                                    class="field-label">
+
+                                    Login
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="login"
+                                    class="form-control"
+                                    th:field="*{login}"
+                                    placeholder="Ex.: lucas"
+                                    autocomplete="off"
+                                    autocapitalize="none"
+                                    spellcheck="false">
+
+
+                                <span class="field-help">
+                                    Use letras, números, ponto,
+                                    hífen ou underline.
+                                </span>
+
+
+                                <span
+                                    class="field-error"
+                                    th:if="${#fields.hasErrors('login')}"
+                                    th:errors="*{login}">
+
+                                    Erro no login
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- PERFIL -->
+
+                            <div class="col-md-6">
+
+
+                                <label
+                                    for="perfil"
+                                    class="field-label">
+
+                                    Perfil
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <select
+                                    id="perfil"
+                                    class="form-select"
+                                    th:field="*{perfil}">
+
+
+                                    <option value="">
+                                        Selecione
+                                    </option>
+
+
+                                    <option
+                                        th:each="perfil : ${perfis}"
+                                        th:value="${perfil}"
+                                        th:text="${perfil.descricao}">
+
+                                        Vendedor
+
+                                    </option>
+
+
+                                </select>
+
+
+                                <span
+                                    class="field-error"
+                                    th:if="${#fields.hasErrors('perfil')}"
+                                    th:errors="*{perfil}">
+
+                                    Erro no perfil
+
+                                </span>
+
+
+                            </div>
+
+
+                            <!-- E-MAIL -->
+
+                            <div class="col-12">
+
+
+                                <label
+                                    for="email"
+                                    class="field-label">
+
+                                    E-mail
+
+                                    <span
+                                        style="
+                                            font-weight: 400;
+                                            color: #aaa29a;
+                                        ">
+
+                                        (opcional)
+
+                                    </span>
+
+                                </label>
+
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    class="form-control"
+                                    th:field="*{email}"
+                                    placeholder="Ex.: usuario@empresa.com"
+                                    autocomplete="off">
+
+
+                                <span class="field-help">
+                                    O login será utilizado para entrar no sistema.
+                                    O e-mail não é obrigatório.
+                                </span>
+
+
+                                <span
+                                    class="field-error"
+                                    th:if="${#fields.hasErrors('email')}"
+                                    th:errors="*{email}">
+
+                                    Erro no e-mail
+
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- AÇÕES -->
+
+                    <div class="form-actions">
+
+
+                        <a
+                            th:href="@{/usuarios}"
+                            class="cancel-button">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="save-button">
+
+                            <i class="bi bi-person-check"></i>
+
+                            Criar usuário
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+                <!-- ==================================================
+                     INFORMAÇÕES
+                ================================================== -->
+
+                <div class="info-card">
+
+
+                    <div class="info-icon">
+
+                        <i class="bi bi-shield-lock"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Primeiro acesso
+                    </h3>
+
+
+                    <p>
+                        O administrador não precisa
+                        criar uma senha para o colaborador.
+                        O sistema cuidará dessa etapa.
+                    </p>
+
+
+                    <div class="info-item">
+
+
+                        <i class="bi bi-key"></i>
+
+
+                        <div>
+
+
+                            <strong>
+                                Senha temporária
+                            </strong>
+
+
+                            <span>
+                                O novo usuário receberá
+                                inicialmente:
+                            </span>
+
+
+                            <span class="temporary-password">
+                                CarpintariaReis
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="info-item">
+
+
+                        <i class="bi bi-arrow-repeat"></i>
+
+
+                        <div>
+
+
+                            <strong>
+                                Troca obrigatória
+                            </strong>
+
+
+                            <span>
+                                No primeiro login, o usuário
+                                será obrigado a definir
+                                uma nova senha.
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="info-item">
+
+
+                        <i class="bi bi-check-circle"></i>
+
+
+                        <div>
+
+
+                            <strong>
+                                Acesso ativo
+                            </strong>
+
+
+                            <span>
+                                O usuário será criado ativo
+                                e poderá realizar imediatamente
+                                o primeiro acesso.
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="info-item">
+
+
+                        <i class="bi bi-person-badge"></i>
+
+
+                        <div>
+
+
+                            <strong>
+                                Perfil
+                            </strong>
+
+
+                            <span>
+                                O perfil define as permissões
+                                padrão que serão configuradas
+                                na próxima etapa do sistema.
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+<script>
+
+    const button =
+        document.getElementById(
+            "mobileMenuButton"
+        );
+
+
+    const sidebar =
+        document.querySelector(
+            ".sidebar"
+        );
+
+
+    if (button && sidebar) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                sidebar.classList.toggle(
+                    "sidebar-open"
+                );
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

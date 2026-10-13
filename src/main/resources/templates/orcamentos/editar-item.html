@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Item | Sistema de Carpintaria</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/dashboard.css}">
+
+    <style>
+        body {
+            background: #f5f4f1;
+        }
+
+        .edit-page {
+            padding: 30px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 22px;
+            color: #777069;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .back-link:hover {
+            color: #98643c;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .page-label {
+            color: #a87548;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .page-heading h1 {
+            margin: 5px 0;
+            color: #29241f;
+            font-size: 29px;
+            font-weight: 700;
+            letter-spacing: -.8px;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: #8e867e;
+            font-size: 12px;
+        }
+
+        .heading-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #29241f, #171513);
+            color: #d3a46f;
+            font-size: 20px;
+            box-shadow: 0 10px 25px rgba(35, 29, 24, .12);
+        }
+
+        .form-card {
+            max-width: 1100px;
+            overflow: hidden;
+            border: 1px solid #e9e5df;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 8px 30px rgba(43, 36, 30, .035);
+        }
+
+        .form-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 23px;
+            border-bottom: 1px solid #eeeae5;
+        }
+
+        .form-header-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #f2ece6;
+            color: #9a6840;
+            font-size: 15px;
+        }
+
+        .form-card-header h2 {
+            margin: 0;
+            color: #302a25;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .form-card-header p {
+            margin: 3px 0 0;
+            color: #989189;
+            font-size: 10px;
+        }
+
+        .form-card-body {
+            padding: 25px;
+        }
+
+        .form-section {
+            margin-bottom: 29px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 17px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0ece7;
+            color: #4a433d;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            text-transform: uppercase;
+        }
+
+        .section-title i {
+            color: #a87548;
+        }
+
+        .form-label {
+            margin-bottom: 7px;
+            color: #554e48;
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        .optional {
+            color: #aaa29a;
+            font-weight: 500;
+        }
+
+        .form-control,
+        .form-select,
+        .input-group-text {
+            min-height: 45px;
+            border-color: #ded9d3;
+            font-size: 12px;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            background: #fcfbfa;
+            color: #302b26;
+            box-shadow: none;
+            transition: .2s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #a97850;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(169, 120, 80, .08);
+        }
+
+        .input-group .input-group-text {
+            background: #f4f1ed;
+            color: #756d65;
+        }
+
+        .form-help {
+            margin-top: 5px;
+            color: #aaa29a;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        .calculo-info {
+            min-height: 45px;
+            padding: 12px 14px;
+            border: 1px solid #e8e0d7;
+            border-radius: 10px;
+            background: #faf7f3;
+            color: #746a61;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .item-summary {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 22px;
+            padding: 15px 16px;
+            border: 1px solid #e9e2da;
+            border-radius: 12px;
+            background: #faf7f3;
+        }
+
+        .item-summary-icon {
+            width: 39px;
+            height: 39px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #ede4da;
+            color: #98673f;
+        }
+
+        .item-summary strong {
+            display: block;
+            color: #3c352f;
+            font-size: 11px;
+        }
+
+        .item-summary span {
+            display: block;
+            margin-top: 2px;
+            color: #918980;
+            font-size: 9px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 9px;
+            margin-top: 28px;
+            padding-top: 21px;
+            border-top: 1px solid #eeeae5;
+        }
+
+        .btn-cancel {
+            min-height: 44px;
+            padding: 0 17px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border: 1px solid #ddd8d2;
+            border-radius: 10px;
+            background: #fff;
+            color: #625b55;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .btn-cancel:hover {
+            background: #f7f5f2;
+            color: #39332e;
+        }
+
+        .btn-save {
+            min-height: 44px;
+            padding: 0 19px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border: 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #29241f, #171513);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            box-shadow: 0 8px 22px rgba(35, 29, 24, .13);
+            transition: .2s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 11px 25px rgba(35, 29, 24, .18);
+        }
+
+        @media (max-width: 768px) {
+            .edit-page {
+                padding: 18px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+            }
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+
+            .heading-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 17px;
+            }
+
+            .form-card-body {
+                padding: 19px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn-cancel,
+            .btn-save {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside
+        th:replace="~{fragments/sidebar :: sidebar('orcamentos')}">
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="d-flex align-items-center gap-3">
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button">
+
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <strong>
+                    Editar Item
+                </strong>
+            </div>
+        </header>
+
+        <section class="edit-page">
+
+            <a
+                th:href="@{/orcamentos/{id}(id=${orcamento.id})}"
+                class="back-link">
+
+                <i class="bi bi-arrow-left"></i>
+
+                Voltar para o orçamento
+            </a>
+
+            <div class="page-heading">
+
+                <div>
+                    <span class="page-label">
+                        ORÇAMENTO
+                    </span>
+
+                    <h1>
+                        Editar Item
+                    </h1>
+
+                    <p>
+                        Altere os dados do item e salve
+                        para recalcular o orçamento.
+                    </p>
+                </div>
+
+                <div class="heading-icon">
+                    <i class="bi bi-pencil-square"></i>
+                </div>
+            </div>
+
+            <div class="form-card">
+
+                <div class="form-card-header">
+
+                    <div class="form-header-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Dados do item
+                        </h2>
+
+                        <p>
+                            As medidas são informadas em metros.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-card-body">
+
+                    <div class="item-summary">
+
+                        <div class="item-summary-icon">
+                            <i class="bi bi-receipt"></i>
+                        </div>
+
+                        <div>
+                            <strong
+                                th:text="${orcamento.numero}">
+                                ORC-000001
+                            </strong>
+
+                            <span
+                                th:text="${orcamento.cliente.nomeRazaoSocial}">
+                                Cliente
+                            </span>
+                        </div>
+                    </div>
+
+                    <form
+                        th:action="@{/orcamentos/{orcamentoId}/itens/{itemId}/editar(
+                            orcamentoId=${orcamento.id},
+                            itemId=${item.id}
+                        )}"
+                        method="post">
+
+                        <!-- IDENTIFICAÇÃO -->
+                        <div class="form-section">
+
+                            <div class="section-title">
+                                <i class="bi bi-card-text"></i>
+                                Identificação
+                            </div>
+
+                            <div class="row g-3">
+
+                                <div class="col-12">
+
+                                    <label
+                                        for="divisoria"
+                                        class="form-label">
+
+                                        Divisória / Seção
+                                        <span class="optional">
+                                            (opcional)
+                                        </span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="divisoria"
+                                        name="divisoria"
+                                        class="form-control"
+                                        th:value="${item.divisoria}"
+                                        placeholder="Ex: FORRO, ACABAMENTO, ESQUADRIAS">
+
+                                    <div class="form-help">
+                                        Use quando este item iniciar uma nova
+                                        divisão no orçamento.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label
+                                        for="produto"
+                                        class="form-label">
+
+                                        Descrição *
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="produto"
+                                        name="produto"
+                                        class="form-control"
+                                        th:value="${item.produto}"
+                                        placeholder="Descrição do item"
+                                        required>
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <label
+                                        for="criterioVenda"
+                                        class="form-label">
+
+                                        Base do cálculo *
+                                    </label>
+
+                                    <select
+                                        id="criterioVenda"
+                                        name="criterioVenda"
+                                        class="form-select"
+                                        onchange="criterioAlterado()"
+                                        required>
+
+                                        <option
+                                            th:each="criterio : ${criteriosVenda}"
+                                            th:value="${criterio}"
+                                            th:selected="${criterio == item.criterioVenda}"
+                                            th:text="${
+                                                criterio.name() == 'ML'
+                                                ? 'ML - Metro Linear'
+                                                : (
+                                                    criterio.name() == 'M2'
+                                                    ? 'M² - Metro Quadrado'
+                                                    : 'M³ - Metro Cúbico'
+                                                )
+                                            }">
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <label
+                                        for="quantidade"
+                                        class="form-label">
+
+                                        Quantidade *
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        id="quantidade"
+                                        name="quantidade"
+                                        class="form-control"
+                                        min="1"
+                                        th:value="${item.quantidade}"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INFORMAÇÕES COMPLEMENTARES -->
+                        <div class="form-section">
+
+                            <div class="section-title">
+                                <i class="bi bi-info-circle"></i>
+                                Informações complementares
+                            </div>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+
+                                    <label
+                                        for="ambiente"
+                                        class="form-label">
+
+                                        Ambiente
+                                        <span class="optional">
+                                            (opcional)
+                                        </span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="ambiente"
+                                        name="ambiente"
+                                        class="form-control"
+                                        th:value="${item.ambiente}"
+                                        placeholder="Ex: Sala">
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label
+                                        for="acionamento"
+                                        class="form-label">
+
+                                        Acionamento
+                                        <span class="optional">
+                                            (opcional)
+                                        </span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="acionamento"
+                                        name="acionamento"
+                                        class="form-control"
+                                        th:value="${item.acionamento}"
+                                        placeholder="Ex: Pivotante">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MEDIDAS -->
+                        <div class="form-section">
+
+                            <div class="section-title">
+                                <i class="bi bi-rulers"></i>
+                                Medidas e valor
+                            </div>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+
+                                    <label
+                                        for="comprimento"
+                                        class="form-label">
+
+                                        Comprimento (m) *
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="comprimento"
+                                        name="comprimento"
+                                        class="form-control"
+                                        inputmode="decimal"
+                                        th:value="${item.comprimento != null
+                                            ? #numbers.formatDecimal(
+                                                item.comprimento,
+                                                1,
+                                                'POINT',
+                                                2,
+                                                'COMMA'
+                                            )
+                                            : ''}"
+                                        placeholder="Ex: 1,27"
+                                        required>
+
+                                    <div class="form-help">
+                                        Ex.: 1 metro e 27 cm = 1,27
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-md-4"
+                                    id="campoLargura">
+
+                                    <label
+                                        for="largura"
+                                        class="form-label">
+
+                                        Largura (m)
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="largura"
+                                        name="largura"
+                                        class="form-control"
+                                        inputmode="decimal"
+                                        th:value="${item.largura != null
+                                            ? #numbers.formatDecimal(
+                                                item.largura,
+                                                1,
+                                                'POINT',
+                                                2,
+                                                'COMMA'
+                                            )
+                                            : ''}"
+                                        placeholder="Ex: 0,80">
+
+                                    <div class="form-help">
+                                        Ex.: 80 cm = 0,80
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-md-4"
+                                    id="campoEspessura">
+
+                                    <label
+                                        for="espessura"
+                                        class="form-label">
+
+                                        Espessura (m)
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="espessura"
+                                        name="espessura"
+                                        class="form-control"
+                                        inputmode="decimal"
+                                        th:value="${item.espessura != null
+                                            ? #numbers.formatDecimal(
+                                                item.espessura,
+                                                1,
+                                                'POINT',
+                                                2,
+                                                'COMMA'
+                                            )
+                                            : ''}"
+                                        placeholder="Ex: 0,05">
+
+                                    <div class="form-help">
+                                        Ex.: 5 cm = 0,05
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label
+                                        for="precoUnitario"
+                                        class="form-label">
+
+                                        Preço *
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            R$
+                                        </span>
+
+                                        <input
+                                            type="text"
+                                            id="precoUnitario"
+                                            name="precoUnitario"
+                                            class="form-control"
+                                            inputmode="decimal"
+                                            th:value="${item.precoUnitario != null
+                                                ? #numbers.formatDecimal(
+                                                    item.precoUnitario,
+                                                    1,
+                                                    'POINT',
+                                                    2,
+                                                    'COMMA'
+                                                )
+                                                : ''}"
+                                            placeholder="Ex: 450,00"
+                                            required>
+                                    </div>
+
+                                    <div
+                                        id="textoPreco"
+                                        class="form-help">
+
+                                        Informe o preço conforme
+                                        a base de cálculo.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8 d-flex align-items-end">
+
+                                    <div
+                                        id="calculoInfo"
+                                        class="calculo-info w-100">
+
+                                        As medidas necessárias dependem
+                                        da base de cálculo escolhida.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+
+                            <a
+                                th:href="@{/orcamentos/{id}(id=${orcamento.id})}"
+                                class="btn-cancel">
+
+                                <i class="bi bi-x-lg"></i>
+                                Cancelar
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn-save">
+
+                                <i class="bi bi-check-lg"></i>
+                                Salvar alterações
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<script>
+    function criterioAlterado() {
+
+        const criterio =
+            document.getElementById("criterioVenda").value;
+
+        const campoLargura =
+            document.getElementById("campoLargura");
+
+        const campoEspessura =
+            document.getElementById("campoEspessura");
+
+        const largura =
+            document.getElementById("largura");
+
+        const espessura =
+            document.getElementById("espessura");
+
+        const calculoInfo =
+            document.getElementById("calculoInfo");
+
+        const textoPreco =
+            document.getElementById("textoPreco");
+
+
+        if (criterio === "ML") {
+
+            campoLargura.style.display = "none";
+            campoEspessura.style.display = "none";
+
+            largura.required = false;
+            espessura.required = false;
+
+            calculoInfo.innerHTML =
+                "<strong>Metro Linear:</strong> Comprimento × Quantidade.";
+
+            textoPreco.textContent =
+                "Informe o preço por Metro Linear (ML).";
+
+            return;
+        }
+
+
+        if (criterio === "M2") {
+
+            campoLargura.style.display = "block";
+            campoEspessura.style.display = "none";
+
+            largura.required = true;
+            espessura.required = false;
+
+            calculoInfo.innerHTML =
+                "<strong>Metro Quadrado:</strong> Comprimento × Largura × Quantidade.";
+
+            textoPreco.textContent =
+                "Informe o preço por Metro Quadrado (m²).";
+
+            return;
+        }
+
+
+        if (criterio === "M3") {
+
+            campoLargura.style.display = "block";
+            campoEspessura.style.display = "block";
+
+            largura.required = true;
+            espessura.required = true;
+
+            calculoInfo.innerHTML =
+                "<strong>Metro Cúbico:</strong> Comprimento × Largura × Espessura × Quantidade.";
+
+            textoPreco.textContent =
+                "Informe o preço por Metro Cúbico (m³).";
+        }
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+            criterioAlterado();
+        }
+    );
+
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+    const sidebar =
+        document.querySelector(".sidebar");
+
+
+    if (button && sidebar) {
+
+        button.addEventListener(
+            "click",
+            function () {
+                sidebar.classList.toggle("sidebar-open");
+            }
+        );
+    }
+</script>
+
+</body>
+</html>

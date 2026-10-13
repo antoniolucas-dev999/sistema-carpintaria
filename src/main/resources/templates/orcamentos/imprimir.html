@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Orçamento | Sistema de Carpintaria</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #ece9e5;
+            color: #29241f;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        /* ==================================================
+           AÇÕES
+        ================================================== */
+
+        .actions {
+            width: 210mm;
+
+            margin:
+                20px
+                auto
+                12px;
+
+            display: flex;
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+        .action-button {
+            min-height: 40px;
+
+            padding:
+                0
+                15px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            border:
+                1px solid
+                #d7d1ca;
+
+            border-radius: 9px;
+
+            background: #ffffff;
+
+            color: #403a35;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            cursor: pointer;
+        }
+
+        .action-button.primary {
+            border-color: #25211d;
+
+            background: #25211d;
+
+            color: #ffffff;
+        }
+
+        /* ==================================================
+           FOLHA
+        ================================================== */
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+
+            margin:
+                0
+                auto
+                30px;
+
+            padding:
+                12mm
+                11mm;
+
+            background: #ffffff;
+
+            box-shadow:
+                0
+                10px
+                35px
+                rgba(0, 0, 0, .10);
+        }
+
+        /* ==================================================
+           CABEÇALHO
+        ================================================== */
+
+        .document-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+
+            padding-bottom: 17px;
+
+            border-bottom:
+                2px solid
+                #2b2622;
+        }
+
+        .system-brand {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+        }
+
+        .brand-mark {
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #2b2622;
+
+            color: #ffffff;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .brand-text strong {
+            display: block;
+
+            color: #2b2622;
+
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .brand-text span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #8a8179;
+
+            font-size: 9px;
+        }
+
+        .budget-title {
+            text-align: right;
+        }
+
+        .budget-title h1 {
+            margin: 0;
+
+            color: #2b2622;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .budget-number {
+            margin-top: 4px;
+
+            color: #9a6c45;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .budget-date {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #8c847c;
+
+            font-size: 9px;
+        }
+
+        /* ==================================================
+           SEÇÕES
+        ================================================== */
+
+        .section-title {
+            margin:
+                20px
+                0
+                9px;
+
+            padding-bottom: 5px;
+
+            border-bottom:
+                1px solid
+                #ded8d1;
+
+            color: #6f5139;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: .8px;
+
+            text-transform: uppercase;
+        }
+
+        /* ==================================================
+           DADOS
+        ================================================== */
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                12px
+                18px;
+        }
+
+        .info-item {
+            min-width: 0;
+        }
+
+        .info-label {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #928a82;
+
+            font-size: 7px;
+            font-weight: 700;
+
+            letter-spacing: .5px;
+
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            display: block;
+
+            color: #332e2a;
+
+            font-size: 9px;
+            font-weight: 650;
+
+            line-height: 1.45;
+
+            overflow-wrap: anywhere;
+        }
+
+        /* ==================================================
+           TABELA
+        ================================================== */
+
+        .items-wrapper {
+            width: 100%;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                #d9d4ce;
+        }
+
+        .items-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            table-layout: fixed;
+
+            font-size: 7.4px;
+        }
+
+        .items-table th {
+            padding:
+                7px
+                3px;
+
+            border-bottom:
+                1px solid
+                #d4cec7;
+
+            background: #f3f0ec;
+
+            color: #665e57;
+
+            font-size: 6.6px;
+            font-weight: 800;
+
+            letter-spacing: .25px;
+
+            text-transform: uppercase;
+
+            vertical-align: middle;
+        }
+
+        .items-table td {
+            padding:
+                7px
+                3px;
+
+            border-bottom:
+                1px solid
+                #e4e0db;
+
+            color: #3d3732;
+
+            vertical-align: top;
+
+            overflow-wrap: anywhere;
+        }
+
+        .items-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .items-table tbody tr {
+            page-break-inside: avoid;
+        }
+
+        .division-row td {
+            padding:
+                6px
+                7px;
+
+            border-top:
+                1px solid
+                #cfc6bc;
+
+            border-bottom:
+                1px solid
+                #cfc6bc;
+
+            background: #eae4dd;
+
+            color: #664a34;
+
+            font-size: 7px;
+            font-weight: 800;
+
+            letter-spacing: .6px;
+
+            text-transform: uppercase;
+        }
+
+        .descricao-item {
+            font-weight: 700;
+
+            text-align: center;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        /* COLUNAS */
+
+        .col-item {
+            width: 4%;
+        }
+
+        .col-qtd {
+            width: 6%;
+        }
+
+        .col-descricao {
+            width: 21%;
+        }
+
+        .col-opcional {
+            width: 10%;
+        }
+
+        .col-comprimento {
+            width: 9%;
+        }
+
+        .col-medida {
+            width: 8%;
+        }
+
+        .col-base {
+            width: 6%;
+        }
+
+        .col-calculado {
+            width: 9%;
+        }
+
+        .col-preco {
+            width: 10%;
+        }
+
+        .col-total {
+            width: 11%;
+        }
+
+        /* ==================================================
+           TOTAIS
+        ================================================== */
+
+        .totals-area {
+            display: flex;
+            justify-content: flex-end;
+
+            margin-top: 18px;
+
+            page-break-inside: avoid;
+        }
+
+        .totals {
+            width: 315px;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            padding:
+                7px
+                0;
+
+            border-bottom:
+                1px solid
+                #ddd7d1;
+
+            color: #514a44;
+
+            font-size: 9px;
+        }
+
+        .total-line strong {
+            color: #2e2925;
+        }
+
+        .total-percent {
+            color: #91877e;
+
+            font-size: 7px;
+        }
+
+        .grand-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 7px;
+
+            padding:
+                11px
+                12px;
+
+            background: #29241f;
+
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* ==================================================
+           OBSERVAÇÕES
+        ================================================== */
+
+        .observations {
+            margin-top: 21px;
+
+            page-break-inside: avoid;
+        }
+
+        .observations-box {
+            min-height: 48px;
+
+            padding: 9px 10px;
+
+            border:
+                1px solid
+                #ddd7d1;
+
+            background: #faf9f7;
+
+            color: #514a44;
+
+            font-size: 8px;
+
+            line-height: 1.55;
+
+            white-space: pre-line;
+        }
+
+        /* ==================================================
+           RODAPÉ
+        ================================================== */
+
+        .footer {
+            margin-top: 30px;
+
+            padding-top: 11px;
+
+            border-top:
+                1px solid
+                #ddd7d1;
+
+            text-align: center;
+
+            color: #99918a;
+
+            font-size: 7px;
+        }
+
+        .footer strong {
+            color: #534c45;
+        }
+
+        /* ==================================================
+           IMPRESSÃO
+        ================================================== */
+
+        @media print {
+
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            body {
+                background: #ffffff;
+            }
+
+            .actions {
+                display: none !important;
+            }
+
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+
+                margin: 0;
+
+                padding:
+                    10mm
+                    9mm;
+
+                box-shadow: none;
+            }
+
+            .items-table tr {
+                page-break-inside: avoid;
+            }
+
+            .section-title {
+                page-break-after: avoid;
+            }
+
+            .totals-area,
+            .observations {
+                page-break-inside: avoid;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ==================================================
+     AÇÕES
+================================================== -->
+
+<div class="actions">
+
+    <a
+        th:href="@{/orcamentos/{id}(id=${orcamento.id})}"
+        class="action-button">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Voltar
+    </a>
+
+
+    <button
+        type="button"
+        class="action-button primary"
+        onclick="window.print()">
+
+        <i class="bi bi-printer"></i>
+
+        Imprimir / Salvar PDF
+    </button>
+
+</div>
+
+
+
+<!-- ==================================================
+     FOLHA
+================================================== -->
+
+<div class="page">
+
+
+    <!-- ==================================================
+         CABEÇALHO
+    ================================================== -->
+
+    <header class="document-header">
+
+
+        <div class="system-brand">
+
+
+            <div class="brand-mark">
+                SC
+            </div>
+
+
+            <div class="brand-text">
+
+                <strong>
+                    Sistema de Carpintaria
+                </strong>
+
+                <span>
+                    Gestão de clientes e orçamentos
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="budget-title">
+
+
+            <h1>
+                ORÇAMENTO
+            </h1>
+
+
+            <div
+                class="budget-number"
+                th:text="${orcamento.numero}">
+
+                ORC-000001
+            </div>
+
+
+            <span
+                class="budget-date"
+                th:text="${#temporals.format(
+                    orcamento.dataEmissao,
+                    'dd/MM/yyyy'
+                )}">
+
+                12/09/2026
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         DADOS DO CLIENTE
+    ================================================== -->
+
+    <div class="section-title">
+        Dados do cliente
+    </div>
+
+
+    <div class="info-grid">
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Cliente
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.cliente.nomeRazaoSocial}">
+
+                Cliente
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                CPF / CNPJ
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.cliente.cpfCnpj}">
+
+                CPF / CNPJ
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Telefone
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.cliente.telefone != null
+                    && !orcamento.cliente.telefone.isBlank()
+                    ? orcamento.cliente.telefone
+                    : '-'}">
+
+                -
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                E-mail
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.cliente.email != null
+                    && !orcamento.cliente.email.isBlank()
+                    ? orcamento.cliente.email
+                    : '-'}">
+
+                -
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item"
+             style="grid-column: span 2;">
+
+            <span class="info-label">
+                Endereço
+            </span>
+
+            <span class="info-value">
+
+
+                <span
+                    th:if="${
+                        (orcamento.cliente.endereco == null
+                        || orcamento.cliente.endereco.isBlank())
+
+                        &&
+
+                        (orcamento.cliente.cidade == null
+                        || orcamento.cliente.cidade.isBlank())
+
+                        &&
+
+                        (orcamento.cliente.cep == null
+                        || orcamento.cliente.cep.isBlank())
+                    }">
+
+                    -
+                </span>
+
+
+                <span
+                    th:if="${orcamento.cliente.endereco != null
+                        && !orcamento.cliente.endereco.isBlank()}"
+                    th:text="${orcamento.cliente.endereco}">
+
+                    Rua Exemplo, 100
+                </span>
+
+
+                <span
+                    th:if="${orcamento.cliente.cidade != null
+                        && !orcamento.cliente.cidade.isBlank()}">
+
+                    <span
+                        th:if="${orcamento.cliente.endereco != null
+                            && !orcamento.cliente.endereco.isBlank()}">
+
+                        -
+                    </span>
+
+                    <span
+                        th:text="${orcamento.cliente.cidade}">
+
+                        Cidade
+                    </span>
+
+                </span>
+
+
+                <span
+                    th:if="${orcamento.cliente.cep != null
+                        && !orcamento.cliente.cep.isBlank()}">
+
+                    <span
+                        th:if="${
+                            (orcamento.cliente.endereco != null
+                            && !orcamento.cliente.endereco.isBlank())
+
+                            ||
+
+                            (orcamento.cliente.cidade != null
+                            && !orcamento.cliente.cidade.isBlank())
+                        }">
+
+                        -
+                    </span>
+
+                    CEP:
+
+                    <span
+                        th:text="${orcamento.cliente.cep}">
+
+                        00000-000
+                    </span>
+
+                </span>
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         DADOS DO ORÇAMENTO
+    ================================================== -->
+
+    <div class="section-title">
+        Informações do orçamento
+    </div>
+
+
+    <div class="info-grid">
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Vendedor
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.vendedor.nome}">
+
+                Vendedor
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Status
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.status.descricao}">
+
+                Rascunho
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Data de emissão
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${#temporals.format(
+                    orcamento.dataEmissao,
+                    'dd/MM/yyyy'
+                )}">
+
+                12/09/2026
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Obra
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.obra != null
+                    && !orcamento.obra.isBlank()
+                    ? orcamento.obra
+                    : '-'}">
+
+                -
+            </span>
+
+        </div>
+
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Tipo de madeira
+            </span>
+
+            <span
+                class="info-value"
+                th:text="${orcamento.tipoMadeira != null
+                    && !orcamento.tipoMadeira.isBlank()
+                    ? orcamento.tipoMadeira
+                    : '-'}">
+
+                -
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         ITENS
+    ================================================== -->
+
+    <div class="section-title">
+        Itens do orçamento
+    </div>
+
+
+    <div
+        class="items-wrapper"
+        th:with="
+            temAmbiente=${orcamento.itens.?[
+                ambiente != null
+                and !ambiente.isBlank()
+            ].size() > 0},
+
+            temAcionamento=${orcamento.itens.?[
+                acionamento != null
+                and !acionamento.isBlank()
+            ].size() > 0},
+
+            totalColunas=${10
+                + (temAmbiente ? 1 : 0)
+                + (temAcionamento ? 1 : 0)}
+        ">
+
+
+        <table class="items-table">
+
+
+            <thead>
+
+            <tr>
+
+                <th class="col-item text-center">
+                    Item
+                </th>
+
+                <th class="col-qtd text-center">
+                    Qtd.
+                </th>
+
+                <th class="col-descricao text-center">
+                    Descrição
+                </th>
+
+                <th
+                    th:if="${temAmbiente}"
+                    class="col-opcional text-center">
+
+                    Ambiente
+                </th>
+
+                <th
+                    th:if="${temAcionamento}"
+                    class="col-opcional text-center">
+
+                    Acionamento
+                </th>
+
+                <th class="col-comprimento text-center">
+                    Comprimento
+                </th>
+
+                <th class="col-medida text-center">
+                    Largura
+                </th>
+
+                <th class="col-medida text-center">
+                    Espessura
+                </th>
+
+                <th class="col-base text-center">
+                    Base
+                </th>
+
+                <th class="col-calculado text-center">
+                    Calculado
+                </th>
+
+                <th class="col-preco text-right">
+                    Preço
+                </th>
+
+                <th class="col-total text-right">
+                    Total
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+            <th:block
+                th:each="item, status : ${orcamento.itens}">
+
+
+                <!-- DIVISÓRIA -->
+                <tr
+                    th:if="${item.divisoria != null
+                        && !item.divisoria.isBlank()}"
+                    class="division-row">
+
+                    <td
+                        th:attr="colspan=${totalColunas}">
+
+                        <span th:text="${item.divisoria}">
+                            SEÇÃO
+                        </span>
+
+                    </td>
+
+                </tr>
+
+
+                <!-- ITEM -->
+                <tr>
+
+
+                    <td
+                        class="text-center"
+                        th:text="${status.count}">
+
+                        1
+                    </td>
+
+
+                    <td
+                        class="text-center"
+                        th:text="${item.quantidade}">
+
+                        1
+                    </td>
+
+
+                    <td
+                        class="descricao-item"
+                        th:text="${item.produto}">
+
+                        Descrição
+                    </td>
+
+
+                    <td
+                        th:if="${temAmbiente}"
+                        class="text-center"
+                        th:text="${item.ambiente != null
+                            && !item.ambiente.isBlank()
+                            ? item.ambiente
+                            : '-'}">
+
+                        -
+                    </td>
+
+
+                    <td
+                        th:if="${temAcionamento}"
+                        class="text-center"
+                        th:text="${item.acionamento != null
+                            && !item.acionamento.isBlank()
+                            ? item.acionamento
+                            : '-'}">
+
+                        -
+                    </td>
+
+
+                    <td class="text-center nowrap">
+
+                        <span
+                            th:text="${item.comprimento != null
+                                ? #numbers.formatDecimal(
+                                    item.comprimento,
+                                    1,
+                                    'POINT',
+                                    2,
+                                    'COMMA'
+                                )
+                                : '-'}">
+
+                            0,00
+                        </span>
+
+                        <span th:if="${item.comprimento != null}">
+                            m
+                        </span>
+
+                    </td>
+
+
+                    <td class="text-center nowrap">
+
+                        <span
+                            th:text="${item.largura != null
+                                ? #numbers.formatDecimal(
+                                    item.largura,
+                                    1,
+                                    'POINT',
+                                    2,
+                                    'COMMA'
+                                )
+                                : '-'}">
+
+                            -
+                        </span>
+
+                        <span th:if="${item.largura != null}">
+                            m
+                        </span>
+
+                    </td>
+
+
+                    <td class="text-center nowrap">
+
+                        <span
+                            th:text="${item.espessura != null
+                                ? #numbers.formatDecimal(
+                                    item.espessura,
+                                    1,
+                                    'POINT',
+                                    2,
+                                    'COMMA'
+                                )
+                                : '-'}">
+
+                            -
+                        </span>
+
+                        <span th:if="${item.espessura != null}">
+                            m
+                        </span>
+
+                    </td>
+
+
+                    <td
+                        class="text-center"
+                        th:text="${item.criterioVenda.name() == 'ML'
+                            ? 'ML'
+                            : (
+                                item.criterioVenda.name() == 'M2'
+                                ? 'M²'
+                                : 'M³'
+                            )}">
+
+                        M²
+                    </td>
+
+
+                    <td class="text-center nowrap">
+
+                        <span
+                            th:text="${#numbers.formatDecimal(
+                                item.medidaCalculada,
+                                1,
+                                'POINT',
+                                4,
+                                'COMMA'
+                            )}">
+
+                            0,0000
+                        </span>
+
+                        <span
+                            th:text="${item.criterioVenda.name() == 'ML'
+                                ? ' m'
+                                : (
+                                    item.criterioVenda.name() == 'M2'
+                                    ? ' m²'
+                                    : ' m³'
+                                )}">
+                        </span>
+
+                    </td>
+
+
+                    <td class="text-right nowrap">
+
+                        R$
+
+                        <span
+                            th:text="${#numbers.formatDecimal(
+                                item.precoUnitario,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                            )}">
+
+                            0,00
+                        </span>
+
+                    </td>
+
+
+                    <td class="text-right nowrap">
+
+                        <strong>
+
+                            R$
+
+                            <span
+                                th:text="${#numbers.formatDecimal(
+                                    item.valorTotal,
+                                    1,
+                                    'POINT',
+                                    2,
+                                    'COMMA'
+                                )}">
+
+                                0,00
+                            </span>
+
+                        </strong>
+
+                    </td>
+
+                </tr>
+
+            </th:block>
+
+
+            <tr th:if="${#lists.isEmpty(orcamento.itens)}">
+
+                <td
+                    colspan="12"
+                    class="text-center">
+
+                    Nenhum item adicionado.
+                </td>
+
+            </tr>
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         TOTAIS
+    ================================================== -->
+
+    <div class="totals-area">
+
+
+        <div class="totals">
+
+
+            <div class="total-line">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+
+                    R$
+
+                    <span
+                        th:text="${#numbers.formatDecimal(
+                            orcamento.subtotal,
+                            1,
+                            'POINT',
+                            2,
+                            'COMMA'
+                        )}">
+
+                        0,00
+                    </span>
+
+                </strong>
+
+            </div>
+
+
+
+            <div
+                class="total-line"
+                th:if="${orcamento.percentualFrete != null
+                    && orcamento.percentualFrete.compareTo(
+                        T(java.math.BigDecimal).ZERO
+                    ) > 0}">
+
+                <span>
+
+                    Frete
+
+                    <span class="total-percent">
+
+                        (
+
+                        <span
+                            th:text="${#numbers.formatDecimal(
+                                orcamento.percentualFrete,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                            )}">
+
+                            0,00
+                        </span>
+
+                        %)
+
+                    </span>
+
+                </span>
+
+                <strong>
+
+                    R$
+
+                    <span
+                        th:text="${#numbers.formatDecimal(
+                            orcamento.valorFrete,
+                            1,
+                            'POINT',
+                            2,
+                            'COMMA'
+                        )}">
+
+                        0,00
+                    </span>
+
+                </strong>
+
+            </div>
+
+
+
+            <div
+                class="total-line"
+                th:if="${orcamento.percentualDesconto != null
+                    && orcamento.percentualDesconto.compareTo(
+                        T(java.math.BigDecimal).ZERO
+                    ) > 0}">
+
+                <span>
+
+                    Desconto
+
+                    <span class="total-percent">
+
+                        (
+
+                        <span
+                            th:text="${#numbers.formatDecimal(
+                                orcamento.percentualDesconto,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                            )}">
+
+                            0,00
+                        </span>
+
+                        %)
+
+                    </span>
+
+                </span>
+
+                <strong>
+
+                    - R$
+
+                    <span
+                        th:text="${#numbers.formatDecimal(
+                            orcamento.valorDesconto,
+                            1,
+                            'POINT',
+                            2,
+                            'COMMA'
+                        )}">
+
+                        0,00
+                    </span>
+
+                </strong>
+
+            </div>
+
+
+
+            <div class="grand-total">
+
+                <span>
+                    TOTAL
+                </span>
+
+                <span>
+
+                    R$
+
+                    <span
+                        th:text="${#numbers.formatDecimal(
+                            orcamento.total,
+                            1,
+                            'POINT',
+                            2,
+                            'COMMA'
+                        )}">
+
+                        0,00
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         OBSERVAÇÕES
+    ================================================== -->
+
+    <div
+        class="observations"
+        th:if="${orcamento.observacoes != null
+            && !orcamento.observacoes.isBlank()}">
+
+
+        <div class="section-title">
+            Observações
+        </div>
+
+
+        <div
+            class="observations-box"
+            th:text="${orcamento.observacoes}">
+
+            Observações do orçamento.
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         RODAPÉ
+    ================================================== -->
+
+    <footer class="footer">
+
+        <strong>
+            Sistema de Carpintaria
+        </strong>
+
+        <br>
+
+        Documento gerado pelo sistema de gestão.
+
+    </footer>
+
+</div>
+
+
+</body>
+</html>
